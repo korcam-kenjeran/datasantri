@@ -239,18 +239,96 @@
 
         <!-- ================= SECTION INPUT DATA ================= -->
         <section id="section-input" class="hidden space-y-6">
-            <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm">
-                <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-100">
-                    <div class="w-12 h-12 rounded-2xl amber-gradient text-white flex items-center justify-center text-xl font-bold shadow-md shadow-amber-500/20">
-                        <i class="fa-solid fa-file-pen"></i>
+            <!-- ================= KARTU LOGIN PETUGAS (DITAMPILKAN JIKA BELUM LOGIN) ================= -->
+            <div id="authContainer" class="max-w-md mx-auto bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md my-8 space-y-6">
+                <div class="text-center space-y-2">
+                    <div class="w-16 h-16 rounded-2xl amber-gradient text-white flex items-center justify-center text-2xl font-black mx-auto shadow-md shadow-amber-500/30">
+                        <i class="fa-solid fa-lock"></i>
                     </div>
+                    <h2 class="text-xl sm:text-2xl font-black text-slate-900">Akses Terbatas: Login</h2>
+                    <p class="text-xs text-slate-500">Silakan masukkan Username dan Password untuk mengakses formulir input data santri.</p>
+                </div>
+
+                <!-- Alert Pesan Error Login -->
+                <div id="authErrorAlert" class="hidden p-3.5 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-2xl flex items-center gap-2.5">
+                    <i class="fa-solid fa-circle-exclamation text-base text-red-500"></i>
+                    <span id="authErrorMessage">Username atau Password salah.</span>
+                </div>
+
+                <form id="formLogin" onsubmit="handleLoginSubmit(event)" class="space-y-4">
                     <div>
-                        <h2 class="text-xl font-black text-slate-900">Formulir Input Data TPQ</h2>
-                        <p class="text-xs font-medium text-slate-500">Pilih kecamatan, nama lembaga yang terdaftar, lalu masukkan rincian data per kelas.</p>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Username</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                            <input type="text" id="loginUsername" required autocomplete="username" placeholder="Masukkan username..." class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all bg-white">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Password</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-key"></i>
+                            </span>
+                            <input type="password" id="loginPassword" required autocomplete="current-password" placeholder="Masukkan password..." class="w-full pl-10 pr-11 py-3 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all bg-white">
+                            <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 hover:text-slate-600 transition-colors">
+                                <i id="iconTogglePassword" class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btnLoginSubmit" class="w-full py-3.5 amber-gradient text-white rounded-xl font-bold text-sm transition-all amber-glow hover:opacity-95 flex items-center justify-center gap-2 mt-2">
+                        <i id="iconLoginSubmit" class="fa-solid fa-right-to-bracket"></i>
+                        <span>Masuk ke Formulir Input</span>
+                    </button>
+                </form>
+
+                <div class="pt-4 border-t border-slate-100 text-center">
+                    <p class="text-[11px] font-medium text-slate-400">
+                        <i class="fa-solid fa-shield-halved text-amber-500 mr-1"></i> Akun tersimpan langsung di Google Spreadsheet tab <code class="bg-slate-100 px-1.5 py-0.5 rounded text-amber-700 font-bold">Users</code>
+                    </p>
+                </div>
+            </div>
+
+            <!-- ================= FORMULIR INPUT DATA (HANYA MUNCUL SETELAH LOGIN) ================= -->
+            <div id="formInputContainer" class="hidden bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-100">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl amber-gradient text-white flex items-center justify-center text-xl font-bold shadow-md shadow-amber-500/20">
+                            <i class="fa-solid fa-file-pen"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-black text-slate-900">Formulir Input Data TPQ</h2>
+                            <p class="text-xs font-medium text-slate-500">Pilih kecamatan, nama lembaga yang terdaftar, lalu masukkan rincian data per kelas.</p>
+                        </div>
+                    </div>
+
+                    <!-- Badge Informasi Akun Login & Tombol Logout -->
+                    <div class="flex items-center gap-3 bg-amber-50 border border-amber-200/80 px-4 py-2 rounded-2xl self-start sm:self-auto">
+                        <div class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center text-xs font-bold shadow-xs">
+                            <i class="fa-solid fa-user-check"></i>
+                        </div>
+                        <div class="text-left">
+                            <p id="userBadgeName" class="text-xs font-black text-slate-900 leading-tight">Pengurus Cabang</p>
+                            <p id="userBadgeRole" class="text-[10px] font-bold text-amber-700 uppercase tracking-wider">Admin</p>
+                        </div>
+                        <button onclick="handleLogout()" title="Keluar / Logout" class="ml-2 px-3 py-1.5 bg-white hover:bg-red-50 text-red-600 hover:text-red-700 rounded-xl text-xs font-bold border border-red-200 transition-all flex items-center gap-1.5 shadow-xs">
+                            <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                        </button>
                     </div>
                 </div>
 
                 <form id="formInputTpq" onsubmit="handleFormSubmit(event)" class="space-y-8">
+                    <!-- Banner Informasi Lembaga Terkunci Otomatis -->
+                    <div id="lembagaLockNotice" class="hidden p-3.5 bg-amber-50 border border-amber-300 text-amber-900 rounded-2xl flex items-center gap-3 text-xs font-bold shadow-xs">
+                        <span class="w-7 h-7 rounded-xl bg-amber-500 text-white flex items-center justify-center text-sm shadow-xs">
+                            <i class="fa-solid fa-lock"></i>
+                        </span>
+                        <span id="lembagaLockText">Kecamatan dan Nama TPQ terkunci otomatis sesuai akun lembaga Anda.</span>
+                    </div>
+
                     <!-- Informasi Umum TPQ -->
                     <div>
                         <h3 class="text-sm font-black text-amber-700 uppercase tracking-wider mb-4 flex items-center gap-2">
@@ -284,10 +362,10 @@
                         </div>
                     </div>
 
-                    <!-- TPQ Dasar -->
+                    <!-- TPQ Dasar/Jilid -->
                     <div class="pt-4 border-t border-slate-100">
                         <h3 class="text-sm font-black text-amber-700 uppercase tracking-wider mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-book"></i> 2. Kategori TPQ Dasar (13 Tingkat)
+                            <i class="fa-solid fa-book"></i> 2. Kategori TPQ Dasar/Jilid (13 Tingkat)
                         </h3>
                         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                             <div>
@@ -345,10 +423,10 @@
                         </div>
                     </div>
 
-                    <!-- Jenjang PRA PTPT -->
+                    <!-- PRA PTPT -->
                     <div class="pt-4 border-t border-slate-100">
                         <h3 class="text-sm font-black text-amber-700 uppercase tracking-wider mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-graduation-cap"></i> 3. Jenjang PRA PTPT (5 Level)
+                            <i class="fa-solid fa-graduation-cap"></i> 3. Kategori PRA PTPT (5 Level)
                         </h3>
                         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
                             <div>
@@ -374,10 +452,10 @@
                         </div>
                     </div>
 
-                    <!-- Jenjang PTPT -->
+                    <!-- PTPT -->
                     <div class="pt-4 border-t border-slate-100">
                         <h3 class="text-sm font-black text-amber-700 uppercase tracking-wider mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-award"></i> 4. Jenjang PTPT (6 Kelas)
+                            <i class="fa-solid fa-award"></i> 4. PTPT (6 Kelas)
                         </h3>
                         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
                             <div>
@@ -506,12 +584,39 @@
                         </span>
                         <h2 class="text-xl sm:text-2xl font-black text-slate-900">Rekapitulasi Santri per Kecamatan</h2>
                     </div>
-                    <p class="text-sm font-medium text-slate-500 mt-1">Akumulasi seluruh siswa di 8 wilayah kecamatan se-Kota Surabaya (TPQ Dasar, PRA PTPT, dan PTPT).</p>
+                    <p class="text-sm font-medium text-slate-500 mt-1">Akumulasi seluruh santri di 8 wilayah kecamatan se-Kota Surabaya (TPQ Dasar, PRA PTPT, dan PTPT).</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <button onclick="window.print()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-sm transition-all border border-slate-200 flex items-center gap-2">
-                        <i class="fa-solid fa-print"></i> Cetak Rekap
-                    </button>
+                    <!-- Dropdown Cetak Rekapitulasi Kecamatan -->
+                    <div class="relative inline-block text-left" id="dropdownCetakWrapper">
+                        <button type="button" onclick="toggleDropdownCetakKecamatan(event)" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-sm transition-all border border-slate-200 flex items-center gap-2 shadow-xs">
+                            <i class="fa-solid fa-print text-amber-600"></i> Cetak Rekap <i class="fa-solid fa-chevron-down text-xs ml-0.5"></i>
+                        </button>
+                        <div id="menuDropdownCetakKecamatan" class="hidden absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50">
+                            <div class="px-4 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100">
+                                Pilihan Cetak Dokumen
+                            </div>
+                            <button type="button" onclick="cetakRekapSemuaKecamatan(); hideDropdownCetakKecamatan();" class="w-full text-left px-4 py-3 text-xs font-bold text-slate-700 hover:bg-amber-50 hover:text-amber-800 flex items-center gap-3 transition-colors">
+                                <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-sm">
+                                    <i class="fa-solid fa-city"></i>
+                                </span>
+                                <div>
+                                    <p class="font-extrabold text-slate-900 leading-tight">Cetak Semua Kecamatan</p>
+                                    <p class="text-[10px] text-slate-400 font-medium">Rekapitulasi 8 kecamatan se-Surabaya</p>
+                                </div>
+                            </button>
+                            <button type="button" onclick="openModalPilihKecamatanCetak(); hideDropdownCetakKecamatan();" class="w-full text-left px-4 py-3 text-xs font-bold text-slate-700 hover:bg-amber-50 hover:text-amber-800 flex items-center gap-3 transition-colors border-t border-slate-100">
+                                <span class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-sm">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </span>
+                                <div>
+                                    <p class="font-extrabold text-slate-900 leading-tight">Cetak Tiap Kecamatan...</p>
+                                    <p class="text-[10px] text-slate-400 font-medium">Pilih 1 kecamatan spesifik</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
                     <button onclick="fetchSheetData()" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold text-sm transition-all shadow-md shadow-amber-200/50 flex items-center gap-2">
                         <i class="fa-solid fa-rotate"></i> Sinkronisasi Data
                     </button>
@@ -545,8 +650,8 @@
                         <i class="fa-solid fa-users"></i>
                     </div>
                     <div>
-                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Siswa Surabaya</p>
-                        <h4 id="kecStatTotalSiswa" class="text-xl font-black text-slate-900">0</h4>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Santri Surabaya</p>
+                        <h4 id="kecStatTotalSantri" class="text-xl font-black text-slate-900">0</h4>
                     </div>
                 </div>
                 <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3.5">
@@ -554,7 +659,7 @@
                         <i class="fa-solid fa-book-open"></i>
                     </div>
                     <div>
-                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">TPQ Dasar (13 Kelas)</p>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">TPQ Dasar/Jilid (13 Kelas)</p>
                         <h4 id="kecStatTotalDasar" class="text-xl font-black text-slate-900">0</h4>
                     </div>
                 </div>
@@ -599,11 +704,11 @@
                                 <th class="py-3.5 px-4 text-center w-12">No</th>
                                 <th class="py-3.5 px-4">Nama Kecamatan</th>
                                 <th class="py-3.5 px-4 text-center">TPQ Terdata</th>
-                                <th class="py-3.5 px-4 text-right">TPQ Dasar</th>
+                                <th class="py-3.5 px-4 text-right">TPQ Dasar/Jilid</th>
                                 <th class="py-3.5 px-4 text-right">PRA PTPT</th>
                                 <th class="py-3.5 px-4 text-right">PTPT</th>
                                 <th class="py-3.5 px-4 text-right bg-amber-50/70 text-amber-900 font-extrabold">Total Santri</th>
-                                <th class="py-3.5 px-4 text-center">Rincian Kelas</th>
+                                <th class="py-3.5 px-4 text-center">Aksi / Cetak</th>
                             </tr>
                         </thead>
                         <tbody id="tbodyRekapKecamatan" class="divide-y divide-slate-100 font-medium">
@@ -618,7 +723,7 @@
 
             <!-- Panel Rincian Kelas Modal / Drawer untuk Kecamatan Terpilih -->
             <div id="panelDetailKelasKecamatan" class="hidden bg-white p-6 sm:p-8 rounded-3xl border-2 border-amber-400 shadow-lg space-y-6">
-                <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-200 gap-3">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg font-bold">
                             <i class="fa-solid fa-list-ol"></i>
@@ -628,12 +733,72 @@
                             <p class="text-xs text-slate-500">Distribusi lengkap santri di seluruh 24 kategori kelas.</p>
                         </div>
                     </div>
-                    <button onclick="closePanelDetailKecamatan()" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-bold flex items-center gap-1.5 transition-all">
-                        <i class="fa-solid fa-xmark"></i> Tutup
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <button type="button" onclick="cetakRekapKecamatanAktifDrawer()" class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all">
+                            <i class="fa-solid fa-print"></i> Cetak Kecamatan Ini
+                        </button>
+                        <button onclick="closePanelDetailKecamatan()" class="p-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold flex items-center gap-1.5 transition-all">
+                            <i class="fa-solid fa-xmark"></i> Tutup
+                        </button>
+                    </div>
                 </div>
                 <div id="panelDetailKecContent">
                     <!-- Diisi via JavaScript -->
+                </div>
+            </div>
+
+            <!-- Modal Dialog Pilih Kecamatan untuk Dicetak -->
+            <div id="modalPilihKecamatanCetak" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+                <div class="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-md w-full p-6 space-y-5">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-base font-bold shadow-md shadow-amber-500/20">
+                                <i class="fa-solid fa-print"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-black text-slate-900 text-base">Cetak Rekap Tiap Kecamatan</h3>
+                                <p class="text-xs text-slate-500">Cetak data santri khusus kecamatan yang dipilih.</p>
+                            </div>
+                        </div>
+                        <button type="button" onclick="closeModalPilihKecamatanCetak()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg">
+                            <i class="fa-solid fa-xmark text-lg"></i>
+                        </button>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                                1. Pilih Kecamatan Yang Ingin Dicetak:
+                            </label>
+                            <select id="modalSelectKecamatanCetak" class="w-full px-4 py-3 rounded-xl border border-slate-300 font-semibold text-sm bg-white focus:ring-2 focus:ring-amber-500">
+                                <option value="Kenjeran">Kecamatan Kenjeran</option>
+                                <option value="Pakal">Kecamatan Pakal</option>
+                                <option value="Jambangan">Kecamatan Jambangan</option>
+                                <option value="Rungkut">Kecamatan Rungkut</option>
+                                <option value="Gunung Anyar">Kecamatan Gunung Anyar</option>
+                                <option value="Karang Pilang">Kecamatan Karang Pilang</option>
+                                <option value="Asemrowo">Kecamatan Asemrowo</option>
+                                <option value="Benowo">Kecamatan Benowo</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                                2. Periode Bulan Pendataan:
+                            </label>
+                            <input type="month" id="modalInputBulanCetak" class="w-full px-4 py-3 rounded-xl border border-slate-300 font-semibold text-sm bg-white focus:ring-2 focus:ring-amber-500">
+                            <p class="text-[11px] text-slate-400 mt-1">*Kosongkan jika ingin mencetak rekapitulasi semua periode.</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+                        <button type="button" onclick="closeModalPilihKecamatanCetak()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-bold text-xs transition-all">
+                            Batal
+                        </button>
+                        <button type="button" onclick="submitModalCetakKecamatan()" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-bold text-xs transition-all shadow-md shadow-amber-600/30 flex items-center gap-2">
+                            <i class="fa-solid fa-print"></i> Cetak Laporan
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -679,7 +844,45 @@
             ]
         };
 
+        // Master Data Kecamatan: Alamat Sekretariat & Sekretaris Korcam (Dapat tersinkron dari tab 'Kecamatan' Google Sheets)
+        let dataKorcamByKecamatan = {
+            "Kenjeran": {
+                alamat: "Kedung Mangu IVC No. 5 Surabaya",
+                sekretaris: "Abd. Rohman Wahid",
+                kontak: "0831-6659-2390"
+            },
+            "Pakal": {
+                alamat: "Sekretariat Korcam Pakal, Surabaya",
+                sekretaris: "Sekretaris Korcam Pakal"
+            },
+            "Jambangan": {
+                alamat: "Sekretariat Korcam Jambangan, Surabaya",
+                sekretaris: "Sekretaris Korcam Jambangan"
+            },
+            "Rungkut": {
+                alamat: "Sekretariat Korcam Rungkut, Surabaya",
+                sekretaris: "Sekretaris Korcam Rungkut"
+            },
+            "Gunung Anyar": {
+                alamat: "Sekretariat Korcam Gunung Anyar, Surabaya",
+                sekretaris: "Sekretaris Korcam Gunung Anyar"
+            },
+            "Karang Pilang": {
+                alamat: "Sekretariat Korcam Karang Pilang, Surabaya",
+                sekretaris: "Sekretaris Korcam Karang Pilang"
+            },
+            "Asemrowo": {
+                alamat: "Sekretariat Korcam Asemrowo, Surabaya",
+                sekretaris: "Sekretaris Korcam Asemrowo"
+            },
+            "Benowo": {
+                alamat: "Sekretariat Korcam Benowo, Surabaya",
+                sekretaris: "Sekretaris Korcam Benowo"
+            }
+        };
+
         const LOCAL_STORAGE_KEY = 'qiraati_santri_data_surabaya_real';
+        const AUTH_STORAGE_KEY = 'qiraati_auth_session';
 
         window.onload = function() {
             const now = new Date();
@@ -689,7 +892,213 @@
             }
             onFilterKecamatanChange();
             fetchSheetData();
+            checkAuthSession();
         };
+
+        // ================= SISTEM AUTENTIKASI PENGGUNA (LOGIN INPUT DATA) =================
+        function checkAuthSession() {
+            const rawUser = sessionStorage.getItem(AUTH_STORAGE_KEY);
+            const authContainer = document.getElementById('authContainer');
+            const formContainer = document.getElementById('formInputContainer');
+            const userBadgeName = document.getElementById('userBadgeName');
+            const userBadgeRole = document.getElementById('userBadgeRole');
+            const lockNotice = document.getElementById('lembagaLockNotice');
+            const lockText = document.getElementById('lembagaLockText');
+            const kecSelect = document.getElementById('kecamatan');
+            const tpqSelect = document.getElementById('namaTpq');
+
+            if (rawUser) {
+                try {
+                    const user = JSON.parse(rawUser);
+                    if (authContainer) authContainer.classList.add('hidden');
+                    if (formContainer) formContainer.classList.remove('hidden');
+                    if (userBadgeName) userBadgeName.innerText = user.nama || user.username;
+                    if (userBadgeRole) userBadgeRole.innerText = (user.role || 'Operator') + ` (${user.username})`;
+
+                    const isLembaga = user.role && user.role.toLowerCase() === 'lembaga';
+
+                    if (isLembaga) {
+                        const userKec = user.kecamatan || 'Kenjeran';
+                        const userNama = user.nama || user.username;
+
+                        if (lockNotice) lockNotice.classList.remove('hidden');
+                        if (lockText) lockText.innerText = `Kecamatan dan Nama TPQ terkunci otomatis untuk ${userNama} (Kec. ${userKec}).`;
+
+                        if (kecSelect) {
+                            kecSelect.value = userKec;
+                            kecSelect.disabled = true;
+                            kecSelect.classList.add('bg-slate-100', 'cursor-not-allowed');
+                            kecSelect.classList.remove('bg-white');
+                        }
+
+                        if (tpqSelect) {
+                            tpqSelect.innerHTML = `<option value="${userNama}" selected>${userNama}</option>`;
+                            tpqSelect.disabled = true;
+                            tpqSelect.classList.add('bg-slate-100', 'cursor-not-allowed');
+                            tpqSelect.classList.remove('bg-white');
+                        }
+                    } else {
+                        // Role Admin
+                        if (lockNotice) lockNotice.classList.add('hidden');
+
+                        if (kecSelect) {
+                            kecSelect.disabled = false;
+                            kecSelect.classList.remove('bg-slate-100', 'cursor-not-allowed');
+                            kecSelect.classList.add('bg-white');
+                        }
+
+                        // Jaga agar tpqSelect responsif terhadap pilihan kecamatan
+                        if (kecSelect && kecSelect.value) {
+                            onInputKecamatanChange();
+                        } else if (tpqSelect) {
+                            tpqSelect.disabled = true;
+                            tpqSelect.classList.add('bg-slate-100');
+                            tpqSelect.classList.remove('bg-white', 'cursor-not-allowed');
+                            tpqSelect.innerHTML = '<option value="" disabled selected>-- Pilih Kecamatan Terlebih Dahulu --</option>';
+                        }
+                    }
+
+                    return true;
+                } catch(e) {
+                    console.error("Gagal membaca sesi login:", e);
+                }
+            }
+
+            if (authContainer) authContainer.classList.remove('hidden');
+            if (formContainer) formContainer.classList.add('hidden');
+            if (lockNotice) lockNotice.classList.add('hidden');
+
+            if (kecSelect) {
+                kecSelect.disabled = false;
+                kecSelect.classList.remove('bg-slate-100', 'cursor-not-allowed');
+                kecSelect.classList.add('bg-white');
+            }
+            if (tpqSelect) {
+                tpqSelect.disabled = true;
+                tpqSelect.classList.add('bg-slate-100');
+                tpqSelect.classList.remove('bg-white', 'cursor-not-allowed');
+                tpqSelect.innerHTML = '<option value="" disabled selected>-- Pilih Kecamatan Terlebih Dahulu --</option>';
+            }
+
+            return false;
+        }
+
+        function togglePasswordVisibility() {
+            const pwdInput = document.getElementById('loginPassword');
+            const icon = document.getElementById('iconTogglePassword');
+            if (!pwdInput) return;
+
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                if (icon) {
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                }
+            } else {
+                pwdInput.type = 'password';
+                if (icon) {
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            }
+        }
+
+        async function handleLoginSubmit(event) {
+            event.preventDefault();
+
+            const uInput = document.getElementById('loginUsername');
+            const pInput = document.getElementById('loginPassword');
+            const btnSubmit = document.getElementById('btnLoginSubmit');
+            const iconSubmit = document.getElementById('iconLoginSubmit');
+            const errAlert = document.getElementById('authErrorAlert');
+            const errMsg = document.getElementById('authErrorMessage');
+
+            const username = uInput.value.trim();
+            const password = pInput.value.trim();
+
+            if (!username || !password) return;
+
+            if (errAlert) errAlert.classList.add('hidden');
+            btnSubmit.disabled = true;
+            iconSubmit.className = "fa-solid fa-spinner fa-spin";
+
+            // 1. Verifikasi langsung ke Google Apps Script Web App (Sheet: Users)
+            if (GOOGLE_SCRIPT_WEB_APP_URL) {
+                try {
+                    const url = `${GOOGLE_SCRIPT_WEB_APP_URL}?action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+                    const response = await fetch(url);
+                    const res = await response.json();
+
+                    btnSubmit.disabled = false;
+                    iconSubmit.className = "fa-solid fa-right-to-bracket";
+
+                    if (res && res.status === 'success') {
+                        sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(res.user));
+                        uInput.value = '';
+                        pInput.value = '';
+                        checkAuthSession();
+                        return;
+                    } else {
+                        if (errAlert && errMsg) {
+                            errMsg.innerText = res.message || "Username atau Password salah.";
+                            errAlert.classList.remove('hidden');
+                        }
+                        return;
+                    }
+                } catch(e) {
+                    console.error("Gagal verifikasi login online:", e);
+                }
+            }
+
+            // 2. Fallback offline jika belum deploy / koneksi bermasalah:
+            setTimeout(() => {
+                btnSubmit.disabled = false;
+                iconSubmit.className = "fa-solid fa-right-to-bracket";
+
+                const mockLembagas = {
+                    "darulhaq": { nama: "DARUL HAQ", kecamatan: "Kenjeran" },
+                    "alislami": { nama: "AL ISLAMI", kecamatan: "Kenjeran" },
+                    "nabaussalam": { nama: "NABAUSSALAM", kecamatan: "Kenjeran" },
+                    "mambau": { nama: "MAMBA'U ASSYARIF", kecamatan: "Kenjeran" },
+                    "miftahul": { nama: "MIFTAHUL JANNAH", kecamatan: "Kenjeran" },
+                    "nuzulul": { nama: "NUZULUL QURAN", kecamatan: "Kenjeran" },
+                    "attibyan": { nama: "AT TIBYAN", kecamatan: "Kenjeran" }
+                };
+
+                const cleanUser = username.toLowerCase();
+
+                if (cleanUser === 'admin' && password === 'qiraati2026') {
+                    const defaultUser = { username: 'admin', nama: 'Pengurus Cabang Surabaya', kecamatan: 'Semua', role: 'Admin' };
+                    sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(defaultUser));
+                    uInput.value = '';
+                    pInput.value = '';
+                    checkAuthSession();
+                } else if (mockLembagas[cleanUser] && password === 'qiraati123') {
+                    const lembagaUser = {
+                        username: cleanUser,
+                        nama: mockLembagas[cleanUser].nama,
+                        kecamatan: mockLembagas[cleanUser].kecamatan,
+                        role: 'Lembaga'
+                    };
+                    sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(lembagaUser));
+                    uInput.value = '';
+                    pInput.value = '';
+                    checkAuthSession();
+                } else {
+                    if (errAlert && errMsg) {
+                        errMsg.innerText = "Username atau Password salah.";
+                        errAlert.classList.remove('hidden');
+                    }
+                }
+            }, 600);
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem(AUTH_STORAGE_KEY);
+            const form = document.getElementById('formInputTpq');
+            if (form) form.reset();
+            checkAuthSession();
+        }
 
         // Handler perubahan kecamatan pada Formulir Input Data
         function onInputKecamatanChange() {
@@ -806,6 +1215,8 @@
 
             if(tabId === 'statistik') {
                 renderStatistik();
+            } else if(tabId === 'input') {
+                checkAuthSession();
             } else if(tabId === 'rekap') {
                 onFilterKecamatanChange();
             } else if(tabId === 'rekap-kecamatan') {
@@ -836,7 +1247,7 @@
                 try {
                     const response = await fetch(GOOGLE_SCRIPT_WEB_APP_URL + '?action=getData');
                     const json = await response.json();
-                    onDataLoaded(json.data || json);
+                    onDataLoaded(json.data || json, json.korcam);
                     return;
                 } catch(e) {
                     console.error("Gagal fetch dari Web App URL:", e);
@@ -875,8 +1286,16 @@
             }, 500);
         }
 
-        function onDataLoaded(data) {
+        function onDataLoaded(data, korcamMap) {
             globalData = data || [];
+            if (korcamMap && typeof korcamMap === 'object') {
+                Object.keys(korcamMap).forEach(k => {
+                    if (!dataKorcamByKecamatan[k]) dataKorcamByKecamatan[k] = {};
+                    if (korcamMap[k].alamat) dataKorcamByKecamatan[k].alamat = korcamMap[k].alamat;
+                    if (korcamMap[k].sekretaris) dataKorcamByKecamatan[k].sekretaris = korcamMap[k].sekretaris;
+                    if (korcamMap[k].kontak) dataKorcamByKecamatan[k].kontak = korcamMap[k].kontak;
+                });
+            }
             const icons = [document.getElementById('iconRefreshStat'), document.getElementById('iconRefreshRekap')];
             icons.forEach(icon => { if(icon) icon.classList.remove('fa-spin'); });
             
@@ -895,6 +1314,23 @@
         async function handleFormSubmit(event) {
             event.preventDefault();
 
+            const rawUser = sessionStorage.getItem(AUTH_STORAGE_KEY);
+            const loggedUser = rawUser ? JSON.parse(rawUser) : null;
+            const isLembaga = loggedUser && loggedUser.role && loggedUser.role.toLowerCase() === 'lembaga';
+
+            const kecVal = isLembaga ? (loggedUser.kecamatan || 'Kenjeran') : document.getElementById('kecamatan').value;
+            const tpqVal = isLembaga ? (loggedUser.nama || '') : document.getElementById('namaTpq').value.trim();
+            const bulanVal = document.getElementById('bulan').value;
+
+            if (!kecVal || !tpqVal) {
+                alert("Harap pilih Kecamatan dan Nama TPQ terlebih dahulu.");
+                return;
+            }
+            if (!bulanVal) {
+                alert("Harap pilih Bulan Pendataan.");
+                return;
+            }
+
             const btnSubmit = document.getElementById('btnSubmit');
             const iconSubmit = document.getElementById('iconSubmit');
             btnSubmit.disabled = true;
@@ -902,9 +1338,9 @@
 
             const dataObj = {
                 id: 'id_' + Date.now(),
-                namaTpq: document.getElementById('namaTpq').value.trim(),
-                kecamatan: document.getElementById('kecamatan').value,
-                bulan: document.getElementById('bulan').value,
+                namaTpq: tpqVal,
+                kecamatan: kecVal,
+                bulan: bulanVal,
                 
                 kelas1a: Number(document.getElementById('kelas1a').value) || 0,
                 kelas1b: Number(document.getElementById('kelas1b').value) || 0,
@@ -981,8 +1417,8 @@
         function resetAndFinishSubmit(newRecord) {
             const btnSubmit = document.getElementById('btnSubmit');
             const iconSubmit = document.getElementById('iconSubmit');
-            btnSubmit.disabled = false;
-            iconSubmit.className = "fa-solid fa-floppy-disk";
+            if (btnSubmit) btnSubmit.disabled = false;
+            if (iconSubmit) iconSubmit.className = "fa-solid fa-floppy-disk";
 
             if (newRecord) {
                 globalData.unshift(newRecord);
@@ -990,12 +1426,17 @@
             }
 
             alert("Data TPQ berhasil disimpan!");
-            document.getElementById('formInputTpq').reset();
-            const tpqSelect = document.getElementById('namaTpq');
-            tpqSelect.disabled = true;
-            tpqSelect.classList.add('bg-slate-100');
-            tpqSelect.classList.remove('bg-white');
-            tpqSelect.innerHTML = '<option value="" disabled selected>-- Pilih Kecamatan Terlebih Dahulu --</option>';
+            const form = document.getElementById('formInputTpq');
+            if (form) form.reset();
+
+            // Kunci kembali untuk Lembaga atau reset normal untuk Admin
+            checkAuthSession();
+
+            const now = new Date();
+            const bulanInput = document.getElementById('bulan');
+            if(bulanInput) {
+                bulanInput.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+            }
 
             renderStatistik();
             switchTab('rekap');
@@ -1480,7 +1921,7 @@
                 return filterBln === "" || normalizeBulan(item.bulan) === filterBln;
             });
 
-            let grandTotalSiswa = 0;
+            let grandTotalSantri = 0;
             let grandTotalDasar = 0;
             let grandTotalPra = 0;
             let grandTotalPtpt = 0;
@@ -1516,7 +1957,7 @@
                     sumKecTotal += Number(item.total || (dasar + pra + ptpt));
                 });
 
-                grandTotalSiswa += sumKecTotal;
+                grandTotalSantri += sumKecTotal;
                 grandTotalDasar += sumDasar;
                 grandTotalPra += sumPra;
                 grandTotalPtpt += sumPtpt;
@@ -1546,9 +1987,14 @@
                             ${sumKecTotal.toLocaleString()}
                         </td>
                         <td class="py-3.5 px-4 text-center">
-                            <button onclick="showDetailKelasKecamatan('${kecName}')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-amber-500 hover:text-white text-slate-700 font-bold text-xs transition-all border border-slate-200 inline-flex items-center gap-1.5 shadow-xs">
-                                <i class="fa-solid fa-eye"></i> Detail
-                            </button>
+                            <div class="inline-flex items-center gap-1.5">
+                                <button onclick="showDetailKelasKecamatan('${kecName}')" title="Lihat Rincian 24 Kelas" class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-all border border-slate-200 inline-flex items-center gap-1 shadow-xs">
+                                    <i class="fa-solid fa-eye"></i> Detail
+                                </button>
+                                <button onclick="cetakRekapSatuKecamatan('${kecName}')" title="Cetak Rekap Kecamatan ${kecName}" class="px-2.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-500 hover:text-white text-amber-700 font-bold text-xs transition-all border border-amber-200 inline-flex items-center gap-1 shadow-xs">
+                                    <i class="fa-solid fa-print"></i> Cetak
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 `;
@@ -1567,7 +2013,7 @@
                             </div>
 
                             <div class="my-4">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">TOTAL SISWA</p>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">TOTAL SANTRI</p>
                                 <p class="text-3xl font-black text-slate-900 mt-0.5">${sumKecTotal.toLocaleString()}</p>
                             </div>
 
@@ -1595,9 +2041,12 @@
                             </div>
                         </div>
 
-                        <div class="pt-4 mt-3 border-t border-slate-100">
-                            <button onclick="showDetailKelasKecamatan('${kecName}')" class="w-full py-2 bg-slate-50 hover:bg-amber-50 text-slate-700 hover:text-amber-800 rounded-xl font-bold text-xs transition-all border border-slate-200 flex items-center justify-center gap-1.5">
-                                <i class="fa-solid fa-list-check"></i> Rincian 24 Kelas
+                        <div class="pt-4 mt-3 border-t border-slate-100 grid grid-cols-2 gap-2">
+                            <button onclick="showDetailKelasKecamatan('${kecName}')" class="py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl font-bold text-xs transition-all border border-slate-200 flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-list-check"></i> Rincian
+                            </button>
+                            <button onclick="cetakRekapSatuKecamatan('${kecName}')" class="py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-xl font-bold text-xs transition-all border border-amber-200 flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-print"></i> Cetak
                             </button>
                         </div>
                     </div>
@@ -1619,7 +2068,7 @@
                         <td class="py-4 px-4 text-right font-black text-blue-300">${grandTotalPra.toLocaleString()}</td>
                         <td class="py-4 px-4 text-right font-black text-purple-300">${grandTotalPtpt.toLocaleString()}</td>
                         <td class="py-4 px-4 text-right font-black text-amber-400 text-lg bg-slate-800">
-                            ${grandTotalSiswa.toLocaleString()}
+                            ${grandTotalSantri.toLocaleString()}
                         </td>
                         <td class="py-4 px-4 text-center text-xs text-slate-400">-</td>
                     </tr>
@@ -1627,18 +2076,21 @@
             }
 
             // Update 4 Kartu KPI Atas Rekap Kecamatan
-            const elTotalSiswa = document.getElementById('kecStatTotalSiswa');
+            const elTotalSantri = document.getElementById('kecStatTotalSantri');
             const elTotalDasar = document.getElementById('kecStatTotalDasar');
             const elTotalPra = document.getElementById('kecStatTotalPra');
             const elTotalPtpt = document.getElementById('kecStatTotalPtpt');
-            if (elTotalSiswa) elTotalSiswa.innerText = grandTotalSiswa.toLocaleString();
+            if (elTotalSantri) elTotalSantri.innerText = grandTotalSantri.toLocaleString();
             if (elTotalDasar) elTotalDasar.innerText = grandTotalDasar.toLocaleString();
             if (elTotalPra) elTotalPra.innerText = grandTotalPra.toLocaleString();
             if (elTotalPtpt) elTotalPtpt.innerText = grandTotalPtpt.toLocaleString();
         }
 
+        let activeDetailKecamatan = "Kenjeran";
+
         // Tampilkan Modal / Panel Rincian 24 Kelas untuk Kecamatan Terpilih
         function showDetailKelasKecamatan(kecName) {
+            activeDetailKecamatan = kecName;
             const filterBln = document.getElementById('filterBulanKecamatan') ? document.getElementById('filterBulanKecamatan').value : "";
             const kecItems = globalData.filter(d => {
                 const matchKec = d.kecamatan === kecName;
@@ -1683,7 +2135,7 @@
                             Total Data Masuk: <span class="bg-white px-2 py-0.5 rounded-lg border border-amber-300 font-black">${kecItems.length} Laporan TPQ</span>
                         </p>
                         <p class="text-xs font-bold text-amber-900">
-                            Total Seluruh Siswa Kec. ${kecName}: <span class="text-base font-black text-amber-700 bg-white px-3 py-1 rounded-xl border border-amber-300 shadow-xs">${subTotal.toLocaleString()} Santri</span>
+                            Total Seluruh Santri Kec. ${kecName}: <span class="text-base font-black text-amber-700 bg-white px-3 py-1 rounded-xl border border-amber-300 shadow-xs">${subTotal.toLocaleString()} Santri</span>
                         </p>
                     </div>
 
@@ -1753,6 +2205,469 @@
 
             panel.classList.remove('hidden');
             panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // ================= SISTEM CETAK REKAPITULASI DOKUMEN =================
+        function toggleDropdownCetakKecamatan(event) {
+            if (event) event.stopPropagation();
+            const dropdown = document.getElementById('menuDropdownCetakKecamatan');
+            if (dropdown) dropdown.classList.toggle('hidden');
+        }
+
+        function hideDropdownCetakKecamatan() {
+            const dropdown = document.getElementById('menuDropdownCetakKecamatan');
+            if (dropdown) dropdown.classList.add('hidden');
+        }
+
+        // Menutup dropdown cetak jika pengguna klik di luar
+        window.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('dropdownCetakWrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                hideDropdownCetakKecamatan();
+            }
+        });
+
+        function openModalPilihKecamatanCetak() {
+            const modal = document.getElementById('modalPilihKecamatanCetak');
+            const selectKec = document.getElementById('modalSelectKecamatanCetak');
+            const inputBln = document.getElementById('modalInputBulanCetak');
+            
+            // Sinkronkan periode bulan default sesuai filter aktif di rekap kecamatan
+            const currentFilterBln = document.getElementById('filterBulanKecamatan') ? document.getElementById('filterBulanKecamatan').value : "";
+            if (inputBln) inputBln.value = currentFilterBln;
+            if (selectKec && activeDetailKecamatan) selectKec.value = activeDetailKecamatan;
+
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeModalPilihKecamatanCetak() {
+            const modal = document.getElementById('modalPilihKecamatanCetak');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function submitModalCetakKecamatan() {
+            const selectKec = document.getElementById('modalSelectKecamatanCetak');
+            const inputBln = document.getElementById('modalInputBulanCetak');
+            const chosenKec = selectKec ? selectKec.value : "Kenjeran";
+            const chosenBln = inputBln ? inputBln.value : "";
+
+            closeModalPilihKecamatanCetak();
+            cetakRekapSatuKecamatan(chosenKec, chosenBln);
+        }
+
+        function cetakRekapKecamatanAktifDrawer() {
+            cetakRekapSatuKecamatan(activeDetailKecamatan);
+        }
+
+        function getTanggalCetakIndo() {
+            const d = new Date();
+            const hari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"][d.getDay()];
+            const bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"][d.getMonth()];
+            const jam = String(d.getHours()).padStart(2, '0');
+            const menit = String(d.getMinutes()).padStart(2, '0');
+            return `${hari}, ${d.getDate()} ${bulan} ${d.getFullYear()} pukul ${jam}:${menit} WIB`;
+        }
+
+        function getTanggalSuratIndo() {
+            const d = new Date();
+            const bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"][d.getMonth()];
+            return `${d.getDate()} ${bulan} ${d.getFullYear()}`;
+        }
+
+        // 1. CETAK SELURUH KECAMATAN (8 WILAYAH KOTA SURABAYA)
+        function cetakRekapSemuaKecamatan() {
+            const filterBln = document.getElementById('filterBulanKecamatan') ? document.getElementById('filterBulanKecamatan').value : "";
+            const periodeStr = filterBln ? formatBulanIndo(filterBln) : "Semua Periode Pendataan";
+            
+            const dataset = globalData.filter(item => {
+                return filterBln === "" || normalizeBulan(item.bulan) === filterBln;
+            });
+
+            let grandTotalSantri = 0;
+            let grandTotalDasar = 0;
+            let grandTotalPra = 0;
+            let grandTotalPtpt = 0;
+            let grandTotalTpq = 0;
+
+            let rowsTbody = '';
+
+            DAFTAR_8_KECAMATAN.forEach((kecName, idx) => {
+                const kecItems = dataset.filter(d => d.kecamatan === kecName);
+                const uniqueTpq = new Set(kecItems.map(d => d.namaTpq).filter(Boolean));
+                const countTpq = uniqueTpq.size;
+                grandTotalTpq += countTpq;
+
+                let sumDasar = 0, sumPra = 0, sumPtpt = 0, sumKecTotal = 0;
+
+                kecItems.forEach(item => {
+                    const dasar = (item.kelas1a||0)+(item.kelas1b||0)+(item.kelas1c||0)+(item.kelas2a||0)+(item.kelas2b||0)+(item.kelas3a||0)+(item.kelas3b||0)+(item.kelas4a||0)+(item.kelas4b||0)+(item.kelas5a||0)+(item.kelas5b||0)+(item.persiapanImtas||0)+(item.persiapanKhotaman||0);
+                    const pra = (item.praPtpt1||0)+(item.praPtpt2||0)+(item.praPtpt3||0)+(item.praPtpt4||0)+(item.praPtpt5||0);
+                    const ptpt = (item.ptpt1||0)+(item.ptpt2||0)+(item.ptpt3||0)+(item.ptpt4||0)+(item.ptpt5||0)+(item.ptpt6||0);
+                    sumDasar += dasar;
+                    sumPra += pra;
+                    sumPtpt += ptpt;
+                    sumKecTotal += Number(item.total || (dasar + pra + ptpt));
+                });
+
+                grandTotalSantri += sumKecTotal;
+                grandTotalDasar += sumDasar;
+                grandTotalPra += sumPra;
+                grandTotalPtpt += sumPtpt;
+
+                rowsTbody += `
+                    <tr>
+                        <td class="text-center">${idx + 1}</td>
+                        <td class="font-bold">Kecamatan ${kecName}</td>
+                        <td class="text-center">${countTpq} TPQ</td>
+                        <td class="text-right">${sumDasar.toLocaleString()}</td>
+                        <td class="text-right">${sumPra.toLocaleString()}</td>
+                        <td class="text-right">${sumPtpt.toLocaleString()}</td>
+                        <td class="text-right font-bold" style="background-color: #fef3c7;">${sumKecTotal.toLocaleString()}</td>
+                    </tr>
+                `;
+            });
+
+            const htmlContent = `
+                <div class="kop-wrapper">
+                    <img src="https://e-qiraati.com/img/qiraati_gold.png" class="kop-logo" alt="Logo Qiraati">
+                    <div class="kop-text">
+                        <h2>KOORDINATOR PENDIDIKAN QIRAATI CABANG SURABAYA</h2>
+                        <p>Sekretariat Cabang Surabaya | Rekapitulasi Data Santri Lembaga TPQ Resmi</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-bottom: 14px;">
+                    <h3 style="margin: 0; font-size: 13pt; text-transform: uppercase; color: #0f172a; font-weight: 800;">
+                        LAPORAN REKAPITULASI SANTRI SE-KOTA SURABAYA (8 KECAMATAN)
+                    </h3>
+                </div>
+
+                <div class="meta-strip">
+                    <div>Periode Pendataan: <span class="badge badge-amber">${periodeStr}</span></div>
+                    <div>Dicetak pada: <span>${getTanggalCetakIndo()}</span></div>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-card-title">Total Santri Surabaya</div>
+                        <div class="kpi-card-val">${grandTotalSantri.toLocaleString()}</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-card-title">TPQ Terdata</div>
+                        <div class="kpi-card-val">${grandTotalTpq} TPQ</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-card-title">TPQ Dasar/Jilid</div>
+                        <div class="kpi-card-val">${grandTotalDasar.toLocaleString()}</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-card-title">PRA PTPT</div>
+                        <div class="kpi-card-val">${grandTotalPra.toLocaleString()}</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-card-title">PTPT</div>
+                        <div class="kpi-card-val">${grandTotalPtpt.toLocaleString()}</div>
+                    </div>
+                </div>
+
+                <table class="tbl-print">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width: 35px;">No</th>
+                            <th>Wilayah Kecamatan</th>
+                            <th class="text-center" style="width: 95px;">TPQ Terdata</th>
+                            <th class="text-right" style="width: 110px;">TPQ Dasar/Jilid</th>
+                            <th class="text-right" style="width: 90px;">PRA PTPT</th>
+                            <th class="text-right" style="width: 90px;">PTPT</th>
+                            <th class="text-right" style="width: 110px;">Total Santri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rowsTbody}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" class="text-center font-bold" style="letter-spacing: 0.5px;">TOTAL SE-KOTA SURABAYA</td>
+                            <td class="text-center font-bold">${grandTotalTpq} TPQ</td>
+                            <td class="text-right font-bold">${grandTotalDasar.toLocaleString()}</td>
+                            <td class="text-right font-bold">${grandTotalPra.toLocaleString()}</td>
+                            <td class="text-right font-bold">${grandTotalPtpt.toLocaleString()}</td>
+                            <td class="text-right font-bold" style="font-size: 11pt;">${grandTotalSantri.toLocaleString()}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="sig-container">
+                    <div class="sig-box">
+                        <p>Mengetahui,</p>
+                        <p style="font-weight: 600;">Bagian Administrasi & Pendataan</p>
+                        <div class="sig-space"></div>
+                        <p class="sig-name">( Pengurus Cabang Surabaya )</p>
+                    </div>
+                    <div class="sig-box">
+                        <p>Surabaya, ${getTanggalSuratIndo()}</p>
+                        <p style="font-weight: 600;">Koordinator Pendidikan Qiraati Cabang Surabaya</p>
+                        <div class="sig-space"></div>
+                        <p class="sig-name">( Koorcab Qiraati Surabaya )</p>
+                    </div>
+                </div>
+            `;
+
+            executePrint(htmlContent, `Rekap_Santri_Surabaya_${filterBln || 'Semua'}`);
+        }
+
+        // 2. CETAK REKAP TIAP KECAMATAN YANG DIPILIH
+        function cetakRekapSatuKecamatan(kecName, optBulan) {
+            const targetKec = kecName || activeDetailKecamatan || "Kenjeran";
+            const korcamInfo = (dataKorcamByKecamatan && dataKorcamByKecamatan[targetKec]) ? dataKorcamByKecamatan[targetKec] : { alamat: "Kota Surabaya", sekretaris: `Sekretaris Korcam ${targetKec}`, kontak: "" };
+            const alamatKorcam = korcamInfo.alamat || "Kota Surabaya";
+            const sekretarisKorcam = korcamInfo.sekretaris || `Sekretaris Korcam ${targetKec}`;
+            const kontakKorcam = korcamInfo.kontak || "";
+            const kontakStr = kontakKorcam ? ` | WhatsApp: ${kontakKorcam}` : "";
+
+            const filterBln = (optBulan !== undefined) ? optBulan : (document.getElementById('filterBulanKecamatan') ? document.getElementById('filterBulanKecamatan').value : "");
+            const periodeStr = filterBln ? formatBulanIndo(filterBln) : "Semua Periode Pendataan";
+
+            const kecItems = globalData.filter(d => {
+                const matchKec = d.kecamatan === targetKec;
+                const matchBln = filterBln === "" || normalizeBulan(d.bulan) === filterBln;
+                return matchKec && matchBln;
+            });
+
+            const uniqueTpqCount = new Set(kecItems.map(d => d.namaTpq).filter(Boolean)).size;
+
+            let subDasar = 0, subPra = 0, subPtpt = 0, subTotal = 0;
+            let k1a=0, k1b=0, k1c=0, k2a=0, k2b=0, k3a=0, k3b=0, k4a=0, k4b=0, k5a=0, k5b=0, imtas=0, khotaman=0;
+            let pra1=0, pra2=0, pra3=0, pra4=0, pra5=0;
+            let ptpt1=0, ptpt2=0, ptpt3=0, ptpt4=0, ptpt5=0, ptpt6=0;
+
+            let rowsTpq = '';
+
+            if (kecItems.length === 0) {
+                rowsTpq = `<tr><td colspan="7" class="text-center" style="padding: 16px; color: #64748b; font-style: italic;">Belum ada laporan data santri terdata untuk Kecamatan ${targetKec} pada periode ini.</td></tr>`;
+            } else {
+                kecItems.forEach((item, idx) => {
+                    const d = (item.kelas1a||0)+(item.kelas1b||0)+(item.kelas1c||0)+(item.kelas2a||0)+(item.kelas2b||0)+(item.kelas3a||0)+(item.kelas3b||0)+(item.kelas4a||0)+(item.kelas4b||0)+(item.kelas5a||0)+(item.kelas5b||0)+(item.persiapanImtas||0)+(item.persiapanKhotaman||0);
+                    const p = (item.praPtpt1||0)+(item.praPtpt2||0)+(item.praPtpt3||0)+(item.praPtpt4||0)+(item.praPtpt5||0);
+                    const pt = (item.ptpt1||0)+(item.ptpt2||0)+(item.ptpt3||0)+(item.ptpt4||0)+(item.ptpt5||0)+(item.ptpt6||0);
+                    const tot = Number(item.total || (d + p + pt));
+
+                    subDasar += d; subPra += p; subPtpt += pt; subTotal += tot;
+
+                    k1a += (item.kelas1a||0); k1b += (item.kelas1b||0); k1c += (item.kelas1c||0);
+                    k2a += (item.kelas2a||0); k2b += (item.kelas2b||0);
+                    k3a += (item.kelas3a||0); k3b += (item.kelas3b||0);
+                    k4a += (item.kelas4a||0); k4b += (item.kelas4b||0);
+                    k5a += (item.kelas5a||0); k5b += (item.kelas5b||0);
+                    imtas += (item.persiapanImtas||0); khotaman += (item.persiapanKhotaman||0);
+
+                    pra1 += (item.praPtpt1||0); pra2 += (item.praPtpt2||0); pra3 += (item.praPtpt3||0); pra4 += (item.praPtpt4||0); pra5 += (item.praPtpt5||0);
+                    ptpt1 += (item.ptpt1||0); ptpt2 += (item.ptpt2||0); ptpt3 += (item.ptpt3||0); ptpt4 += (item.ptpt4||0); ptpt5 += (item.ptpt5||0); ptpt6 += (item.ptpt6||0);
+
+                    rowsTpq += `
+                        <tr>
+                            <td class="text-center">${idx + 1}</td>
+                            <td class="font-bold">${item.namaTpq}</td>
+                            <td class="text-center">${formatBulanIndo(item.bulan)}</td>
+                            <td class="text-right">${d.toLocaleString()}</td>
+                            <td class="text-right">${p.toLocaleString()}</td>
+                            <td class="text-right">${pt.toLocaleString()}</td>
+                            <td class="text-right font-bold" style="background-color: #fef3c7;">${tot.toLocaleString()}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            const htmlContent = `
+                <div class="kop-wrapper">
+                    <img src="https://e-qiraati.com/img/qiraati_gold.png" class="kop-logo" alt="Logo Qiraati">
+                    <div class="kop-text">
+                        <h2>KOORDINATOR PENDIDIKAN QIRAATI CABANG SURABAYA</h2>
+                        <h3>KECAMATAN ${targetKec.toUpperCase()}</h3>
+                        <p>Alamat Sekretariat: ${alamatKorcam}${kontakStr}</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-bottom: 14px;">
+                    <h3 style="margin: 0; font-size: 13pt; text-transform: uppercase; color: #0f172a; font-weight: 800;">
+                        LAPORAN REKAPITULASI SANTRI - KECAMATAN ${targetKec.toUpperCase()}
+                    </h3>
+                </div>
+
+                <div class="meta-strip">
+                    <div>Wilayah: <strong>Kecamatan ${targetKec}</strong> &nbsp;|&nbsp; Periode: <span class="badge badge-amber">${periodeStr}</span></div>
+                    <div>Dicetak pada: <span>${getTanggalCetakIndo()}</span></div>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-card-title">Total Santri Kec. ${targetKec}</div>
+                        <div class="kpi-card-val">${subTotal.toLocaleString()}</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-card-title">Lembaga TPQ Terdata</div>
+                        <div class="kpi-card-val">${uniqueTpqCount} TPQ</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-card-title">TPQ Dasar/Jilid</div>
+                        <div class="kpi-card-val">${subDasar.toLocaleString()}</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-card-title">PRA PTPT</div>
+                        <div class="kpi-card-val">${subPra.toLocaleString()}</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-card-title">PTPT</div>
+                        <div class="kpi-card-val">${subPtpt.toLocaleString()}</div>
+                    </div>
+                </div>
+
+                <div class="section-title">1. Daftar Lembaga TPQ di Kecamatan ${targetKec}</div>
+                <table class="tbl-print">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width: 35px;">No</th>
+                            <th>Nama Lembaga TPQ</th>
+                            <th class="text-center" style="width: 110px;">Bulan Pendataan</th>
+                            <th class="text-right" style="width: 105px;">TPQ Dasar/Jilid</th>
+                            <th class="text-right" style="width: 85px;">PRA PTPT</th>
+                            <th class="text-right" style="width: 85px;">PTPT</th>
+                            <th class="text-right" style="width: 105px;">Total Santri</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rowsTpq}
+                    </tbody>
+                    ${kecItems.length > 0 ? `
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-center font-bold">TOTAL KECAMATAN ${targetKec.toUpperCase()}</td>
+                            <td class="text-right font-bold">${subDasar.toLocaleString()}</td>
+                            <td class="text-right font-bold">${subPra.toLocaleString()}</td>
+                            <td class="text-right font-bold">${subPtpt.toLocaleString()}</td>
+                            <td class="text-right font-bold" style="font-size: 10.5pt;">${subTotal.toLocaleString()}</td>
+                        </tr>
+                    </tfoot>` : ''}
+                </table>
+
+                <div class="section-title">2. Rincian Akumulasi 24 Kategori Kelas di Kecamatan ${targetKec}</div>
+                <div class="grid-24">
+                    <div class="col-jenjang">
+                        <div class="col-jenjang-title">TPQ Dasar/Jilid (Total: ${subDasar.toLocaleString()})</div>
+                        <div class="row-kelas"><span>Kelas 1 A:</span> <strong>${k1a}</strong></div>
+                        <div class="row-kelas"><span>Kelas 1 B:</span> <strong>${k1b}</strong></div>
+                        <div class="row-kelas"><span>Kelas 1 C:</span> <strong>${k1c}</strong></div>
+                        <div class="row-kelas"><span>Kelas 2 A:</span> <strong>${k2a}</strong></div>
+                        <div class="row-kelas"><span>Kelas 2 B:</span> <strong>${k2b}</strong></div>
+                        <div class="row-kelas"><span>Kelas 3 A:</span> <strong>${k3a}</strong></div>
+                        <div class="row-kelas"><span>Kelas 3 B:</span> <strong>${k3b}</strong></div>
+                        <div class="row-kelas"><span>Kelas 4 A:</span> <strong>${k4a}</strong></div>
+                        <div class="row-kelas"><span>Kelas 4 B:</span> <strong>${k4b}</strong></div>
+                        <div class="row-kelas"><span>Kelas 5 A:</span> <strong>${k5a}</strong></div>
+                        <div class="row-kelas"><span>Kelas 5 B:</span> <strong>${k5b}</strong></div>
+                        <div class="row-kelas"><span>Persiapan Imtas:</span> <strong>${imtas}</strong></div>
+                        <div class="row-kelas" style="border-bottom: none;"><span>Persiapan Khotaman:</span> <strong>${khotaman}</strong></div>
+                    </div>
+
+                    <div class="col-jenjang">
+                        <div class="col-jenjang-title">PRA PTPT (Total: ${subPra.toLocaleString()})</div>
+                        <div class="row-kelas"><span>PRA Level 1:</span> <strong>${pra1}</strong></div>
+                        <div class="row-kelas"><span>PRA Level 2:</span> <strong>${pra2}</strong></div>
+                        <div class="row-kelas"><span>PRA Level 3:</span> <strong>${pra3}</strong></div>
+                        <div class="row-kelas"><span>PRA Level 4:</span> <strong>${pra4}</strong></div>
+                        <div class="row-kelas" style="border-bottom: none;"><span>PRA Level 5:</span> <strong>${pra5}</strong></div>
+                    </div>
+
+                    <div class="col-jenjang">
+                        <div class="col-jenjang-title">PTPT (Total: ${subPtpt.toLocaleString()})</div>
+                        <div class="row-kelas"><span>PTPT Kelas 1:</span> <strong>${ptpt1}</strong></div>
+                        <div class="row-kelas"><span>PTPT Kelas 2:</span> <strong>${ptpt2}</strong></div>
+                        <div class="row-kelas"><span>PTPT Kelas 3:</span> <strong>${ptpt3}</strong></div>
+                        <div class="row-kelas"><span>PTPT Kelas 4:</span> <strong>${ptpt4}</strong></div>
+                        <div class="row-kelas"><span>PTPT Kelas 5:</span> <strong>${ptpt5}</strong></div>
+                        <div class="row-kelas" style="border-bottom: none;"><span>PTPT Kelas 6:</span> <strong>${ptpt6}</strong></div>
+                    </div>
+                </div>
+
+                <div class="sig-container" style="justify-content: flex-end;">
+                    <div class="sig-box">
+                        <p>Surabaya, ${getTanggalSuratIndo()}</p>
+                        <p style="font-weight: 600;">Amanah Sekretaris Korcam ${targetKec},</p>
+                        <div class="sig-space"></div>
+                        <p class="sig-name">( ${sekretarisKorcam} )</p>
+                    </div>
+                </div>
+            `;
+
+            executePrint(htmlContent, `Rekap_Santri_Kecamatan_${targetKec}_${filterBln || 'Semua'}`);
+        }
+
+        // Eksekutor Cetak ke Iframe Tersembunyi (Aman tanpa blocker popup)
+        function executePrint(contentHtml, docTitle) {
+            let printIframe = document.getElementById('printIframeHidden');
+            if (!printIframe) {
+                printIframe = document.createElement('iframe');
+                printIframe.id = 'printIframeHidden';
+                printIframe.style.position = 'fixed';
+                printIframe.style.right = '0';
+                printIframe.style.bottom = '0';
+                printIframe.style.width = '0';
+                printIframe.style.height = '0';
+                printIframe.style.border = '0';
+                document.body.appendChild(printIframe);
+            }
+            
+            const pri = printIframe.contentWindow;
+            pri.document.open();
+            pri.document.write(`<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>${docTitle}</title>
+    <style>
+        @page { size: A4; margin: 15mm 12mm 15mm 12mm; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #0f172a; margin: 0; padding: 0; font-size: 10pt; line-height: 1.4; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .kop-wrapper { display: flex; align-items: center; justify-content: center; gap: 16px; border-bottom: 3px double #0f172a; padding-bottom: 10px; margin-bottom: 14px; }
+        .kop-logo { width: 72px; height: 72px; object-fit: contain; flex-shrink: 0; }
+        .kop-text { flex: 1; text-align: center; }
+        .kop-text h2 { margin: 0; font-size: 14.5pt; font-weight: 900; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.2; }
+        .kop-text h3 { margin: 2px 0 0 0; font-size: 12pt; font-weight: 800; color: #92400e; text-transform: uppercase; letter-spacing: 0.5px; }
+        .kop-text p { margin: 4px 0 0 0; font-size: 8.5pt; color: #334155; font-weight: 500; }
+        .meta-strip { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 8.5pt; background: #f8fafc; padding: 6px 12px; border-radius: 6px; border: 1px solid #e2e8f0; font-weight: 600; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 8pt; }
+        .badge-amber { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+        .kpi-grid { display: flex; gap: 8px; margin-bottom: 14px; }
+        .kpi-card { flex: 1; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px; text-align: center; background: #f8fafc; }
+        .kpi-card-title { font-size: 7.5pt; text-transform: uppercase; color: #64748b; font-weight: 700; margin-bottom: 2px; }
+        .kpi-card-val { font-size: 13pt; font-weight: 900; color: #0f172a; }
+        table.tbl-print { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 9pt; }
+        table.tbl-print th { background-color: #f1f5f9; color: #0f172a; border: 1px solid #cbd5e1; padding: 6px 8px; font-weight: 800; text-align: left; }
+        table.tbl-print td { border: 1px solid #cbd5e1; padding: 5px 8px; vertical-align: middle; }
+        table.tbl-print tr:nth-child(even) { background-color: #f8fafc; }
+        table.tbl-print tfoot td { background-color: #0f172a !important; color: #ffffff !important; font-weight: bold; }
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .font-bold { font-weight: bold; }
+        .section-title { font-size: 10pt; font-weight: 800; color: #92400e; margin: 12px 0 6px 0; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; padding-bottom: 3px; }
+        .grid-24 { display: flex; gap: 10px; margin-bottom: 14px; }
+        .col-jenjang { flex: 1; border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px 10px; background: #fafafa; font-size: 8.5pt; }
+        .col-jenjang-title { font-weight: 800; font-size: 8.5pt; text-transform: uppercase; color: #92400e; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; margin-bottom: 6px; }
+        .row-kelas { display: flex; justify-content: space-between; padding: 2px 0; border-bottom: 1px dotted #e2e8f0; }
+        .sig-container { margin-top: 24px; display: flex; justify-content: space-between; font-size: 9pt; page-break-inside: avoid; }
+        .sig-box { text-align: center; width: 250px; }
+        .sig-space { height: 55px; }
+        .sig-name { font-weight: bold; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    ${contentHtml}
+</body>
+</html>`);
+            pri.document.close();
+            setTimeout(() => {
+                pri.focus();
+                pri.print();
+            }, 400);
         }
     </script>
 </body>
