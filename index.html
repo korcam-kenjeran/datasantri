@@ -1427,11 +1427,19 @@
         async function handleFormSubmit(event) {
             event.preventDefault();
 
-            const rawUser = sessionStorage.getItem(AUTH_STORAGE_KEY);
+            const rawUser = localStorage.getItem(AUTH_STORAGE_KEY) || sessionStorage.getItem(AUTH_STORAGE_KEY);
             const loggedUser = rawUser ? JSON.parse(rawUser) : null;
-            const isLembaga = loggedUser && loggedUser.role && loggedUser.role.toLowerCase() === 'lembaga';
+            const userRoleLower = loggedUser && loggedUser.role ? loggedUser.role.toLowerCase() : '';
+            const isLembaga = userRoleLower !== 'admin';
 
-            const kecVal = isLembaga ? (loggedUser.kecamatan || 'Kenjeran') : document.getElementById('kecamatan').value;
+            const standardKecList = ["Pakal", "Jambangan", "Kenjeran", "Rungkut", "Gunung Anyar", "Karang Pilang", "Asemrowo", "Benowo"];
+            const loggedKec = isLembaga ? (
+                standardKecList.find(k => k.toLowerCase() === (loggedUser.kecamatan || '').toLowerCase()) ||
+                standardKecList.find(k => k.toLowerCase() === userRoleLower) ||
+                loggedUser.kecamatan || 'Kenjeran'
+            ) : '';
+
+            const kecVal = isLembaga ? loggedKec : document.getElementById('kecamatan').value;
             const tpqVal = isLembaga ? (loggedUser.nama || '') : document.getElementById('namaTpq').value.trim();
             const bulanVal = document.getElementById('bulan').value;
 
