@@ -94,40 +94,49 @@
             </div>
 
             <!-- Kartu Statistik Utama -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4 transition-all hover:border-amber-400">
-                    <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl font-black border border-amber-100">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4 transition-all hover:border-amber-400">
+                    <div class="w-13 h-13 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl font-black border border-amber-100 flex-shrink-0">
                         <i class="fa-solid fa-school"></i>
                     </div>
                     <div>
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total TPQ Terdata</p>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total TPQ</p>
                         <h3 id="statTotalTpq" class="text-2xl font-black text-slate-900 mt-0.5">0</h3>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4 transition-all hover:border-emerald-400">
-                    <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl font-black border border-emerald-100">
+                <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4 transition-all hover:border-indigo-400">
+                    <div class="w-13 h-13 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl font-black border border-indigo-100 flex-shrink-0">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Guru</p>
+                        <h3 id="statTotalGuru" class="text-2xl font-black text-slate-900 mt-0.5">0</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4 transition-all hover:border-emerald-400">
+                    <div class="w-13 h-13 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl font-black border border-emerald-100 flex-shrink-0">
                         <i class="fa-solid fa-users"></i>
                     </div>
                     <div>
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Seluruh Santri</p>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Santri</p>
                         <h3 id="statTotalSantri" class="text-2xl font-black text-slate-900 mt-0.5">0</h3>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4 transition-all hover:border-amber-400">
-                    <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl font-black border border-amber-100">
+                <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4 transition-all hover:border-amber-400">
+                    <div class="w-13 h-13 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl font-black border border-amber-100 flex-shrink-0">
                         <i class="fa-solid fa-book-open"></i>
                     </div>
                     <div>
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Santri TPQ Dasar</p>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">TPQ Dasar/Jilid</p>
                         <h3 id="statTotalDasar" class="text-2xl font-black text-slate-900 mt-0.5">0</h3>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4 transition-all hover:border-blue-400">
-                    <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl font-black border border-blue-100">
+                <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4 transition-all hover:border-blue-400">
+                    <div class="w-13 h-13 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl font-black border border-blue-100 flex-shrink-0">
                         <i class="fa-solid fa-graduation-cap"></i>
                     </div>
                     <div>
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Santri PRA & PTPT</p>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">PRA & PTPT</p>
                         <h3 id="statTotalPtpt" class="text-2xl font-black text-slate-900 mt-0.5">0</h3>
                     </div>
                 </div>
@@ -334,7 +343,7 @@
                         <h3 class="text-sm font-black text-amber-700 uppercase tracking-wider mb-4 flex items-center gap-2">
                             <i class="fa-solid fa-circle-info"></i> 1. Informasi Lembaga TPQ
                         </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div>
                                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Kecamatan <span class="text-red-500">*</span></label>
                                 <select id="kecamatan" onchange="onInputKecamatanChange()" required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 font-semibold text-sm transition-all bg-white">
@@ -358,6 +367,15 @@
                             <div>
                                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Bulan Pendataan <span class="text-red-500">*</span></label>
                                 <input type="month" id="bulan" required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 font-semibold text-sm transition-all bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Jumlah Guru / Ustadz <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <input type="number" id="jumlahGuru" min="0" value="0" required class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 font-bold text-sm transition-all bg-white" placeholder="0">
+                                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                        <i class="fa-solid fa-chalkboard-user"></i>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -643,41 +661,50 @@
                 </div>
             </div>
 
-            <!-- 4 Kartu Ringkasan Santri Se-Surabaya -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- 5 Kartu Ringkasan Santri & Guru Se-Surabaya -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                 <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3.5">
-                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-black border border-amber-100">
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-black border border-amber-100 flex-shrink-0">
                         <i class="fa-solid fa-users"></i>
                     </div>
                     <div>
-                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Santri Surabaya</p>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Santri</p>
                         <h4 id="kecStatTotalSantri" class="text-xl font-black text-slate-900">0</h4>
                     </div>
                 </div>
                 <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3.5">
-                    <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center text-xl font-black border border-orange-100">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl font-black border border-indigo-100 flex-shrink-0">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Guru</p>
+                        <h4 id="kecStatTotalGuru" class="text-xl font-black text-slate-900">0</h4>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center text-xl font-black border border-orange-100 flex-shrink-0">
                         <i class="fa-solid fa-book-open"></i>
                     </div>
                     <div>
-                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">TPQ Dasar/Jilid (13 Kelas)</p>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">TPQ Dasar/Jilid</p>
                         <h4 id="kecStatTotalDasar" class="text-xl font-black text-slate-900">0</h4>
                     </div>
                 </div>
                 <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3.5">
-                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl font-black border border-blue-100">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl font-black border border-blue-100 flex-shrink-0">
                         <i class="fa-solid fa-graduation-cap"></i>
                     </div>
                     <div>
-                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">PRA PTPT (5 Level)</p>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">PRA PTPT</p>
                         <h4 id="kecStatTotalPra" class="text-xl font-black text-slate-900">0</h4>
                     </div>
                 </div>
                 <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-3.5">
-                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl font-black border border-purple-100">
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl font-black border border-purple-100 flex-shrink-0">
                         <i class="fa-solid fa-award"></i>
                     </div>
                     <div>
-                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">PTPT (6 Kelas)</p>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">PTPT</p>
                         <h4 id="kecStatTotalPtpt" class="text-xl font-black text-slate-900">0</h4>
                     </div>
                 </div>
@@ -704,6 +731,7 @@
                                 <th class="py-3.5 px-4 text-center w-12">No</th>
                                 <th class="py-3.5 px-4">Nama Kecamatan</th>
                                 <th class="py-3.5 px-4 text-center">TPQ Terdata</th>
+                                <th class="py-3.5 px-4 text-center text-indigo-700">Total Guru</th>
                                 <th class="py-3.5 px-4 text-right">TPQ Dasar/Jilid</th>
                                 <th class="py-3.5 px-4 text-right">PRA PTPT</th>
                                 <th class="py-3.5 px-4 text-right">PTPT</th>
@@ -831,8 +859,10 @@
         let chartKelasDetailInstance = null;
         let currentChartFilter = 'all'; // 'all', 'dasar', 'pra', 'ptpt'
 
-        // Master Data Lembaga TPQ Resmi per Kecamatan di Kota Surabaya (Hanya yang sudah terdaftar resmi)
-        const tpqListByKecamatan = {
+        // Master Data Lembaga TPQ Resmi per Kecamatan di Kota Surabaya (Dinamis dari Google Sheet tab Users)
+        let tpqListByKecamatan = {
+            "Pakal": [],
+            "Jambangan": [],
             "Kenjeran": [
                 "AL ISLAMI",
                 "NABAUSSALAM",
@@ -841,7 +871,12 @@
                 "NUZULUL QURAN",
                 "DARUL HAQ",
                 "AT TIBYAN"
-            ]
+            ],
+            "Rungkut": [],
+            "Gunung Anyar": [],
+            "Karang Pilang": [],
+            "Asemrowo": [],
+            "Benowo": []
         };
 
         // Master Data Kecamatan: Alamat Sekretariat & Sekretaris Korcam (Dapat tersinkron dari tab 'Kecamatan' Google Sheets)
@@ -1128,14 +1163,14 @@
                     tpqSelect.appendChild(opt);
                 });
             } else {
-                tpqSelect.disabled = true;
-                tpqSelect.classList.add('bg-slate-100');
-                tpqSelect.classList.remove('bg-white');
+                tpqSelect.disabled = false;
+                tpqSelect.classList.remove('bg-slate-100');
+                tpqSelect.classList.add('bg-white');
 
                 const opt = document.createElement('option');
                 opt.value = "";
                 opt.selected = true;
-                opt.textContent = "Kosong. Hubungi admin";
+                opt.textContent = "-- Belum ada TPQ terdaftar (Tambah di tab Users) --";
                 tpqSelect.appendChild(opt);
             }
         }
@@ -1242,51 +1277,51 @@
                 return;
             }
 
-            // 2. Fetch ke Google Apps Script Web App (Jika di GitHub Pages)
+            // 2. Fetch ke Google Apps Script Web App (Terkoneksi langsung ke Google Sheet)
             if (GOOGLE_SCRIPT_WEB_APP_URL) {
                 try {
                     const response = await fetch(GOOGLE_SCRIPT_WEB_APP_URL + '?action=getData');
                     const json = await response.json();
-                    onDataLoaded(json.data || json, json.korcam);
+                    onDataLoaded(json.data || json, json.korcam, json.tpqByKecamatan);
                     return;
                 } catch(e) {
                     console.error("Gagal fetch dari Web App URL:", e);
                 }
             }
 
-            // 3. Fallback: LocalStorage / Data Default Standar Surabaya
-            setTimeout(() => {
-                let saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-                if (saved) {
-                    try {
-                        onDataLoaded(JSON.parse(saved));
-                        return;
-                    } catch(e) {}
-                }
+            // 3. Fallback: LocalStorage / Data Default Standar Surabaya (Hanya saat offline)
+            let saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+            if (saved) {
+                try {
+                    onDataLoaded(JSON.parse(saved));
+                    return;
+                } catch(e) {}
+            }
 
-                // Data Default Awal Kenjeran
-                const initialDemo = [
-                    {
-                        id: "row_1", namaTpq: "DARUL HAQ", kecamatan: "Kenjeran", bulan: "2026-09",
-                        kelas1a: 14, kelas1b: 12, kelas1c: 10, kelas2a: 15, kelas2b: 14, kelas3a: 16, kelas3b: 12,
-                        kelas4a: 18, kelas4b: 15, kelas5a: 14, kelas5b: 12, persiapanImtas: 10, persiapanKhotaman: 8,
-                        praPtpt1: 24, praPtpt2: 20, praPtpt3: 18, praPtpt4: 15, praPtpt5: 12,
-                        ptpt1: 10, ptpt2: 12, ptpt3: 14, ptpt4: 10, ptpt5: 12, ptpt6: 14, total: 305
-                    },
-                    {
-                        id: "row_2", namaTpq: "AL ISLAMI", kecamatan: "Kenjeran", bulan: "2026-09",
-                        kelas1a: 16, kelas1b: 14, kelas1c: 12, kelas2a: 12, kelas2b: 10, kelas3a: 15, kelas3b: 14,
-                        kelas4a: 12, kelas4b: 10, kelas5a: 10, kelas5b: 8, persiapanImtas: 8, persiapanKhotaman: 6,
-                        praPtpt1: 18, praPtpt2: 15, praPtpt3: 14, praPtpt4: 12, praPtpt5: 10,
-                        ptpt1: 8, ptpt2: 9, ptpt3: 10, ptpt4: 8, ptpt5: 8, ptpt6: 10, total: 243
-                    }
-                ];
-                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(initialDemo));
-                onDataLoaded(initialDemo);
-            }, 500);
+            // Data Default Awal Kenjeran
+            const initialDemo = [
+                {
+                    id: "row_1", namaTpq: "DARUL HAQ", kecamatan: "Kenjeran", bulan: "2026-09",
+                    jumlahGuru: 8,
+                    kelas1a: 14, kelas1b: 12, kelas1c: 10, kelas2a: 15, kelas2b: 14, kelas3a: 16, kelas3b: 12,
+                    kelas4a: 18, kelas4b: 15, kelas5a: 14, kelas5b: 12, persiapanImtas: 10, persiapanKhotaman: 8,
+                    praPtpt1: 24, praPtpt2: 20, praPtpt3: 18, praPtpt4: 15, praPtpt5: 12,
+                    ptpt1: 10, ptpt2: 12, ptpt3: 14, ptpt4: 10, ptpt5: 12, ptpt6: 14, total: 305
+                },
+                {
+                    id: "row_2", namaTpq: "AL ISLAMI", kecamatan: "Kenjeran", bulan: "2026-09",
+                    jumlahGuru: 6,
+                    kelas1a: 16, kelas1b: 14, kelas1c: 12, kelas2a: 12, kelas2b: 10, kelas3a: 15, kelas3b: 14,
+                    kelas4a: 12, kelas4b: 10, kelas5a: 10, kelas5b: 8, persiapanImtas: 8, persiapanKhotaman: 6,
+                    praPtpt1: 18, praPtpt2: 15, praPtpt3: 14, praPtpt4: 12, praPtpt5: 10,
+                    ptpt1: 8, ptpt2: 9, ptpt3: 10, ptpt4: 8, ptpt5: 8, ptpt6: 10, total: 243
+                }
+            ];
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(initialDemo));
+            onDataLoaded(initialDemo);
         }
 
-        function onDataLoaded(data, korcamMap) {
+        function onDataLoaded(data, korcamMap, tpqMap) {
             globalData = data || [];
             if (korcamMap && typeof korcamMap === 'object') {
                 Object.keys(korcamMap).forEach(k => {
@@ -1296,11 +1331,37 @@
                     if (korcamMap[k].kontak) dataKorcamByKecamatan[k].kontak = korcamMap[k].kontak;
                 });
             }
+
+            // Sinkronkan daftar TPQ dari Google Sheet (tab Users)
+            if (tpqMap && typeof tpqMap === 'object') {
+                Object.keys(tpqMap).forEach(k => {
+                    if (!tpqListByKecamatan[k]) tpqListByKecamatan[k] = [];
+                    tpqMap[k].forEach(nama => {
+                        if (!tpqListByKecamatan[k].includes(nama)) {
+                            tpqListByKecamatan[k].push(nama);
+                        }
+                    });
+                });
+            }
+
+            // Sinkronkan juga nama TPQ dari riwayat DataSantri
+            if (Array.isArray(globalData)) {
+                globalData.forEach(d => {
+                    if (d.kecamatan && d.namaTpq) {
+                        if (!tpqListByKecamatan[d.kecamatan]) tpqListByKecamatan[d.kecamatan] = [];
+                        if (!tpqListByKecamatan[d.kecamatan].includes(d.namaTpq)) {
+                            tpqListByKecamatan[d.kecamatan].push(d.namaTpq);
+                        }
+                    }
+                });
+            }
+
             const icons = [document.getElementById('iconRefreshStat'), document.getElementById('iconRefreshRekap')];
             icons.forEach(icon => { if(icon) icon.classList.remove('fa-spin'); });
             
             renderStatistik();
             onFilterKecamatanChange();
+            onInputKecamatanChange();
             renderRekapKecamatan();
         }
 
@@ -1341,6 +1402,7 @@
                 namaTpq: tpqVal,
                 kecamatan: kecVal,
                 bulan: bulanVal,
+                jumlahGuru: Number(document.getElementById('jumlahGuru').value) || 0,
                 
                 kelas1a: Number(document.getElementById('kelas1a').value) || 0,
                 kelas1b: Number(document.getElementById('kelas1b').value) || 0,
@@ -1472,6 +1534,7 @@
         function renderStatistik() {
             const totalTpq = globalData.length;
             let totalSantri = 0;
+            let totalGuru = 0;
             let totalDasar = 0;
             let totalPra = 0;
             let totalPtpt = 0;
@@ -1493,6 +1556,7 @@
                 const ptpt = (item.ptpt1||0)+(item.ptpt2||0)+(item.ptpt3||0)+(item.ptpt4||0)+(item.ptpt5||0)+(item.ptpt6||0);
                 
                 totalSantri += Number(item.total || (dasar + praReal + ptpt));
+                totalGuru += Number(item.jumlahGuru || 0);
                 totalDasar += dasar;
                 totalPra += praReal;
                 totalPtpt += ptpt;
@@ -1514,6 +1578,8 @@
 
             // Update Nilai Kartu Atas
             document.getElementById('statTotalTpq').innerText = totalTpq.toLocaleString();
+            const elTotalGuru = document.getElementById('statTotalGuru');
+            if(elTotalGuru) elTotalGuru.innerText = totalGuru.toLocaleString();
             document.getElementById('statTotalSantri').innerText = totalSantri.toLocaleString();
             document.getElementById('statTotalDasar').innerText = totalDasar.toLocaleString();
             document.getElementById('statTotalPtpt').innerText = (totalPra + totalPtpt).toLocaleString();
@@ -1922,6 +1988,7 @@
             });
 
             let grandTotalSantri = 0;
+            let grandTotalGuru = 0;
             let grandTotalDasar = 0;
             let grandTotalPra = 0;
             let grandTotalPtpt = 0;
@@ -1945,6 +2012,7 @@
                 let sumDasar = 0;
                 let sumPra = 0;
                 let sumPtpt = 0;
+                let sumGuru = 0;
                 let sumKecTotal = 0;
 
                 kecItems.forEach(item => {
@@ -1954,10 +2022,12 @@
                     sumDasar += dasar;
                     sumPra += pra;
                     sumPtpt += ptpt;
+                    sumGuru += Number(item.jumlahGuru || 0);
                     sumKecTotal += Number(item.total || (dasar + pra + ptpt));
                 });
 
                 grandTotalSantri += sumKecTotal;
+                grandTotalGuru += sumGuru;
                 grandTotalDasar += sumDasar;
                 grandTotalPra += sumPra;
                 grandTotalPtpt += sumPtpt;
@@ -1979,6 +2049,9 @@
                             <span class="px-2.5 py-1 rounded-lg text-xs font-bold ${countTpq > 0 ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-slate-100 text-slate-500'}">
                                 ${countTpq} TPQ
                             </span>
+                        </td>
+                        <td class="py-3.5 px-4 text-center font-bold text-indigo-700 bg-indigo-50/40">
+                            ${sumGuru} Guru
                         </td>
                         <td class="py-3.5 px-4 text-right font-semibold text-slate-700">${sumDasar.toLocaleString()}</td>
                         <td class="py-3.5 px-4 text-right font-semibold text-blue-700">${sumPra.toLocaleString()}</td>
@@ -2007,9 +2080,14 @@
                                 <h4 class="font-extrabold text-base text-slate-900 flex items-center gap-2">
                                     <i class="fa-solid fa-location-dot text-amber-600"></i> ${kecName}
                                 </h4>
-                                <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-bold ${countTpq > 0 ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-400'}">
-                                    ${countTpq} TPQ Aktif
-                                </span>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="px-2 py-0.5 rounded-lg text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
+                                        ${sumGuru} Guru
+                                    </span>
+                                    <span class="px-2 py-0.5 rounded-lg text-[10px] font-bold ${countTpq > 0 ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-400'}">
+                                        ${countTpq} TPQ
+                                    </span>
+                                </div>
                             </div>
 
                             <div class="my-4">
@@ -2064,6 +2142,7 @@
                             TOTAL SE-KOTA SURABAYA
                         </td>
                         <td class="py-4 px-4 text-center text-amber-300 font-black">${grandTotalTpq} TPQ</td>
+                        <td class="py-4 px-4 text-center text-indigo-300 font-black">${grandTotalGuru} Guru</td>
                         <td class="py-4 px-4 text-right font-black text-white">${grandTotalDasar.toLocaleString()}</td>
                         <td class="py-4 px-4 text-right font-black text-blue-300">${grandTotalPra.toLocaleString()}</td>
                         <td class="py-4 px-4 text-right font-black text-purple-300">${grandTotalPtpt.toLocaleString()}</td>
@@ -2075,12 +2154,14 @@
                 `;
             }
 
-            // Update 4 Kartu KPI Atas Rekap Kecamatan
+            // Update 5 Kartu KPI Atas Rekap Kecamatan
             const elTotalSantri = document.getElementById('kecStatTotalSantri');
+            const elTotalGuruKec = document.getElementById('kecStatTotalGuru');
             const elTotalDasar = document.getElementById('kecStatTotalDasar');
             const elTotalPra = document.getElementById('kecStatTotalPra');
             const elTotalPtpt = document.getElementById('kecStatTotalPtpt');
             if (elTotalSantri) elTotalSantri.innerText = grandTotalSantri.toLocaleString();
+            if (elTotalGuruKec) elTotalGuruKec.innerText = grandTotalGuru.toLocaleString();
             if (elTotalDasar) elTotalDasar.innerText = grandTotalDasar.toLocaleString();
             if (elTotalPra) elTotalPra.innerText = grandTotalPra.toLocaleString();
             if (elTotalPtpt) elTotalPtpt.innerText = grandTotalPtpt.toLocaleString();
@@ -2284,6 +2365,7 @@
             });
 
             let grandTotalSantri = 0;
+            let grandTotalGuru = 0;
             let grandTotalDasar = 0;
             let grandTotalPra = 0;
             let grandTotalPtpt = 0;
@@ -2297,7 +2379,7 @@
                 const countTpq = uniqueTpq.size;
                 grandTotalTpq += countTpq;
 
-                let sumDasar = 0, sumPra = 0, sumPtpt = 0, sumKecTotal = 0;
+                let sumDasar = 0, sumPra = 0, sumPtpt = 0, sumGuru = 0, sumKecTotal = 0;
 
                 kecItems.forEach(item => {
                     const dasar = (item.kelas1a||0)+(item.kelas1b||0)+(item.kelas1c||0)+(item.kelas2a||0)+(item.kelas2b||0)+(item.kelas3a||0)+(item.kelas3b||0)+(item.kelas4a||0)+(item.kelas4b||0)+(item.kelas5a||0)+(item.kelas5b||0)+(item.persiapanImtas||0)+(item.persiapanKhotaman||0);
@@ -2306,10 +2388,12 @@
                     sumDasar += dasar;
                     sumPra += pra;
                     sumPtpt += ptpt;
+                    sumGuru += Number(item.jumlahGuru || 0);
                     sumKecTotal += Number(item.total || (dasar + pra + ptpt));
                 });
 
                 grandTotalSantri += sumKecTotal;
+                grandTotalGuru += sumGuru;
                 grandTotalDasar += sumDasar;
                 grandTotalPra += sumPra;
                 grandTotalPtpt += sumPtpt;
@@ -2319,6 +2403,7 @@
                         <td class="text-center">${idx + 1}</td>
                         <td class="font-bold">Kecamatan ${kecName}</td>
                         <td class="text-center">${countTpq} TPQ</td>
+                        <td class="text-center font-bold">${sumGuru} Guru</td>
                         <td class="text-right">${sumDasar.toLocaleString()}</td>
                         <td class="text-right">${sumPra.toLocaleString()}</td>
                         <td class="text-right">${sumPtpt.toLocaleString()}</td>
@@ -2353,6 +2438,10 @@
                         <div class="kpi-card-val">${grandTotalSantri.toLocaleString()}</div>
                     </div>
                     <div class="kpi-card">
+                        <div class="kpi-card-title">Total Guru</div>
+                        <div class="kpi-card-val">${grandTotalGuru} Guru</div>
+                    </div>
+                    <div class="kpi-card">
                         <div class="kpi-card-title">TPQ Terdata</div>
                         <div class="kpi-card-val">${grandTotalTpq} TPQ</div>
                     </div>
@@ -2375,11 +2464,12 @@
                         <tr>
                             <th class="text-center" style="width: 35px;">No</th>
                             <th>Wilayah Kecamatan</th>
-                            <th class="text-center" style="width: 95px;">TPQ Terdata</th>
-                            <th class="text-right" style="width: 110px;">TPQ Dasar/Jilid</th>
-                            <th class="text-right" style="width: 90px;">PRA PTPT</th>
-                            <th class="text-right" style="width: 90px;">PTPT</th>
-                            <th class="text-right" style="width: 110px;">Total Santri</th>
+                            <th class="text-center" style="width: 90px;">TPQ Terdata</th>
+                            <th class="text-center" style="width: 85px;">Total Guru</th>
+                            <th class="text-right" style="width: 105px;">TPQ Dasar/Jilid</th>
+                            <th class="text-right" style="width: 85px;">PRA PTPT</th>
+                            <th class="text-right" style="width: 85px;">PTPT</th>
+                            <th class="text-right" style="width: 105px;">Total Santri</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -2389,6 +2479,7 @@
                         <tr>
                             <td colspan="2" class="text-center font-bold" style="letter-spacing: 0.5px;">TOTAL SE-KOTA SURABAYA</td>
                             <td class="text-center font-bold">${grandTotalTpq} TPQ</td>
+                            <td class="text-center font-bold">${grandTotalGuru} Guru</td>
                             <td class="text-right font-bold">${grandTotalDasar.toLocaleString()}</td>
                             <td class="text-right font-bold">${grandTotalPra.toLocaleString()}</td>
                             <td class="text-right font-bold">${grandTotalPtpt.toLocaleString()}</td>
@@ -2436,7 +2527,7 @@
 
             const uniqueTpqCount = new Set(kecItems.map(d => d.namaTpq).filter(Boolean)).size;
 
-            let subDasar = 0, subPra = 0, subPtpt = 0, subTotal = 0;
+            let subDasar = 0, subPra = 0, subPtpt = 0, subGuru = 0, subTotal = 0;
             let k1a=0, k1b=0, k1c=0, k2a=0, k2b=0, k3a=0, k3b=0, k4a=0, k4b=0, k5a=0, k5b=0, imtas=0, khotaman=0;
             let pra1=0, pra2=0, pra3=0, pra4=0, pra5=0;
             let ptpt1=0, ptpt2=0, ptpt3=0, ptpt4=0, ptpt5=0, ptpt6=0;
@@ -2444,15 +2535,16 @@
             let rowsTpq = '';
 
             if (kecItems.length === 0) {
-                rowsTpq = `<tr><td colspan="7" class="text-center" style="padding: 16px; color: #64748b; font-style: italic;">Belum ada laporan data santri terdata untuk Kecamatan ${targetKec} pada periode ini.</td></tr>`;
+                rowsTpq = `<tr><td colspan="8" class="text-center" style="padding: 16px; color: #64748b; font-style: italic;">Belum ada laporan data santri terdata untuk Kecamatan ${targetKec} pada periode ini.</td></tr>`;
             } else {
                 kecItems.forEach((item, idx) => {
                     const d = (item.kelas1a||0)+(item.kelas1b||0)+(item.kelas1c||0)+(item.kelas2a||0)+(item.kelas2b||0)+(item.kelas3a||0)+(item.kelas3b||0)+(item.kelas4a||0)+(item.kelas4b||0)+(item.kelas5a||0)+(item.kelas5b||0)+(item.persiapanImtas||0)+(item.persiapanKhotaman||0);
                     const p = (item.praPtpt1||0)+(item.praPtpt2||0)+(item.praPtpt3||0)+(item.praPtpt4||0)+(item.praPtpt5||0);
                     const pt = (item.ptpt1||0)+(item.ptpt2||0)+(item.ptpt3||0)+(item.ptpt4||0)+(item.ptpt5||0)+(item.ptpt6||0);
+                    const g = Number(item.jumlahGuru || 0);
                     const tot = Number(item.total || (d + p + pt));
 
-                    subDasar += d; subPra += p; subPtpt += pt; subTotal += tot;
+                    subDasar += d; subPra += p; subPtpt += pt; subGuru += g; subTotal += tot;
 
                     k1a += (item.kelas1a||0); k1b += (item.kelas1b||0); k1c += (item.kelas1c||0);
                     k2a += (item.kelas2a||0); k2b += (item.kelas2b||0);
@@ -2469,6 +2561,7 @@
                             <td class="text-center">${idx + 1}</td>
                             <td class="font-bold">${item.namaTpq}</td>
                             <td class="text-center">${formatBulanIndo(item.bulan)}</td>
+                            <td class="text-center font-bold">${g} Guru</td>
                             <td class="text-right">${d.toLocaleString()}</td>
                             <td class="text-right">${p.toLocaleString()}</td>
                             <td class="text-right">${pt.toLocaleString()}</td>
@@ -2505,6 +2598,10 @@
                         <div class="kpi-card-val">${subTotal.toLocaleString()}</div>
                     </div>
                     <div class="kpi-card">
+                        <div class="kpi-card-title">Total Guru</div>
+                        <div class="kpi-card-val">${subGuru} Guru</div>
+                    </div>
+                    <div class="kpi-card">
                         <div class="kpi-card-title">Lembaga TPQ Terdata</div>
                         <div class="kpi-card-val">${uniqueTpqCount} TPQ</div>
                     </div>
@@ -2528,11 +2625,12 @@
                         <tr>
                             <th class="text-center" style="width: 35px;">No</th>
                             <th>Nama Lembaga TPQ</th>
-                            <th class="text-center" style="width: 110px;">Bulan Pendataan</th>
-                            <th class="text-right" style="width: 105px;">TPQ Dasar/Jilid</th>
-                            <th class="text-right" style="width: 85px;">PRA PTPT</th>
-                            <th class="text-right" style="width: 85px;">PTPT</th>
-                            <th class="text-right" style="width: 105px;">Total Santri</th>
+                            <th class="text-center" style="width: 105px;">Bulan Pendataan</th>
+                            <th class="text-center" style="width: 80px;">Jumlah Guru</th>
+                            <th class="text-right" style="width: 100px;">TPQ Dasar/Jilid</th>
+                            <th class="text-right" style="width: 80px;">PRA PTPT</th>
+                            <th class="text-right" style="width: 80px;">PTPT</th>
+                            <th class="text-right" style="width: 100px;">Total Santri</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -2542,6 +2640,7 @@
                     <tfoot>
                         <tr>
                             <td colspan="3" class="text-center font-bold">TOTAL KECAMATAN ${targetKec.toUpperCase()}</td>
+                            <td class="text-center font-bold">${subGuru} Guru</td>
                             <td class="text-right font-bold">${subDasar.toLocaleString()}</td>
                             <td class="text-right font-bold">${subPra.toLocaleString()}</td>
                             <td class="text-right font-bold">${subPtpt.toLocaleString()}</td>
