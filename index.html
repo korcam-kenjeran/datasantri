@@ -917,7 +917,15 @@
         };
 
         const LOCAL_STORAGE_KEY = 'qiraati_santri_data_surabaya_real';
-        const AUTH_STORAGE_KEY = 'qiraati_auth_session';
+        const AUTH_STORAGE_KEY = 'qiraati_auth_session_permanent';
+        const AUTH_USERS_CACHE_KEY = 'qiraati_users_cache';
+
+        // Cache Akun Default untuk Login Super Cepat (0.01 detik)
+        let cachedUsersList = [];
+        try {
+            const savedUsers = localStorage.getItem(AUTH_USERS_CACHE_KEY);
+            if (savedUsers) cachedUsersList = JSON.parse(savedUsers);
+        } catch(e) {}
 
         window.onload = function() {
             const now = new Date();
@@ -932,7 +940,7 @@
 
         // ================= SISTEM AUTENTIKASI PENGGUNA (LOGIN INPUT DATA) =================
         function checkAuthSession() {
-            const rawUser = sessionStorage.getItem(AUTH_STORAGE_KEY);
+            const rawUser = localStorage.getItem(AUTH_STORAGE_KEY) || sessionStorage.getItem(AUTH_STORAGE_KEY);
             const authContainer = document.getElementById('authContainer');
             const formContainer = document.getElementById('formInputContainer');
             const userBadgeName = document.getElementById('userBadgeName');
@@ -950,10 +958,16 @@
                     if (userBadgeName) userBadgeName.innerText = user.nama || user.username;
                     if (userBadgeRole) userBadgeRole.innerText = (user.role || 'Operator') + ` (${user.username})`;
 
-                    const isLembaga = user.role && user.role.toLowerCase() === 'lembaga';
+                    const userRoleLower = (user.role || '').toLowerCase();
+                    const isAdmin = userRoleLower === 'admin';
+                    const isLembaga = !isAdmin;
 
                     if (isLembaga) {
-                        const userKec = user.kecamatan || 'Kenjeran';
+                        const standardKecList = ["Pakal", "Jambangan", "Kenjeran", "Rungkut", "Gunung Anyar", "Karang Pilang", "Asemrowo", "Benowo"];
+                        // Cari kecamatan: baik dari properti user.kecamatan maupun dari user.role jika role tertulis nama kecamatan
+                        let userKec = standardKecList.find(k => k.toLowerCase() === (user.kecamatan || '').toLowerCase()) ||
+                                      standardKecList.find(k => k.toLowerCase() === userRoleLower) ||
+                                      user.kecamatan || 'Kenjeran';
                         const userNama = user.nama || user.username;
 
                         if (lockNotice) lockNotice.classList.remove('hidden');
@@ -1057,7 +1071,42 @@
             btnSubmit.disabled = true;
             iconSubmit.className = "fa-solid fa-spinner fa-spin";
 
-            // 1. Verifikasi langsung ke Google Apps Script Web App (Sheet: Users)
+            const cleanUser = username.toLowerCase();
+
+            // 1. FAST-TRACK INSTANT LOGIN (0.01 Detik) dari Cache Browser
+            // Cek akun Admin default
+            if (cleanUser === 'admin' && password === 'qiraati2026') {
+                const adminUser = { username: 'admin', nama: 'Pengurus Cabang Surabaya', kecamatan: 'Semua', role: 'Admin' };
+                localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(adminUser));
+                uInput.value = '';
+                pInput.value = '';
+                btnSubmit.disabled = false;
+                iconSubmit.className = "fa-solid fa-right-to-bracket";
+                checkAuthSession();
+                return;
+            }
+
+            // Cek dari cache pengguna lokal yang sudah di-preload
+            if (Array.isArray(cachedUsersList) && cachedUsersList.length > 0) {
+                const found = cachedUsersList.find(u => u.username === cleanUser && u.password === password);
+                if (found) {
+                    const loggedUser = {
+                        username: found.username,
+                        nama: found.nama,
+                        kecamatan: found.kecamatan,
+                        role: found.role
+                    };
+                    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(loggedUser));
+                    uInput.value = '';
+                    pInput.value = '';
+                    btnSubmit.disabled = false;
+                    iconSubmit.className = "fa-solid fa-right-to-bracket";
+                    checkAuthSession();
+                    return;
+                }
+            }
+
+            // 2. Jika belum ada di cache lokal, cek langsung ke Google Apps Script Web App
             if (GOOGLE_SCRIPT_WEB_APP_URL) {
                 try {
                     const url = `${GOOGLE_SCRIPT_WEB_APP_URL}?action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
@@ -1068,7 +1117,7 @@
                     iconSubmit.className = "fa-solid fa-right-to-bracket";
 
                     if (res && res.status === 'success') {
-                        sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(res.user));
+                        localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(res.user));
                         uInput.value = '';
                         pInput.value = '';
                         checkAuthSession();
@@ -1085,50 +1134,41 @@
                 }
             }
 
-            // 2. Fallback offline jika belum deploy / koneksi bermasalah:
-            setTimeout(() => {
-                btnSubmit.disabled = false;
-                iconSubmit.className = "fa-solid fa-right-to-bracket";
+            // 3. Fallback Lembaga Offline Darurat
+            const mockLembagas = {
+                "darulhaq": { nama: "DARUL HAQ", kecamatan: "Kenjeran" },
+                "alislami": { nama: "AL ISLAMI", kecamatan: "Kenjeran" },
+                "nabaussalam": { nama: "NABAUSSALAM", kecamatan: "Kenjeran" },
+                "mambau": { nama: "MAMBA'U ASSYARIF", kecamatan: "Kenjeran" },
+                "miftahul": { nama: "MIFTAHUL JANNAH", kecamatan: "Kenjeran" },
+                "nuzulul": { nama: "NUZULUL QURAN", kecamatan: "Kenjeran" },
+                "attibyan": { nama: "AT TIBYAN", kecamatan: "Kenjeran" }
+            };
 
-                const mockLembagas = {
-                    "darulhaq": { nama: "DARUL HAQ", kecamatan: "Kenjeran" },
-                    "alislami": { nama: "AL ISLAMI", kecamatan: "Kenjeran" },
-                    "nabaussalam": { nama: "NABAUSSALAM", kecamatan: "Kenjeran" },
-                    "mambau": { nama: "MAMBA'U ASSYARIF", kecamatan: "Kenjeran" },
-                    "miftahul": { nama: "MIFTAHUL JANNAH", kecamatan: "Kenjeran" },
-                    "nuzulul": { nama: "NUZULUL QURAN", kecamatan: "Kenjeran" },
-                    "attibyan": { nama: "AT TIBYAN", kecamatan: "Kenjeran" }
+            btnSubmit.disabled = false;
+            iconSubmit.className = "fa-solid fa-right-to-bracket";
+
+            if (mockLembagas[cleanUser] && password === 'qiraati123') {
+                const lembagaUser = {
+                    username: cleanUser,
+                    nama: mockLembagas[cleanUser].nama,
+                    kecamatan: mockLembagas[cleanUser].kecamatan,
+                    role: 'Lembaga'
                 };
-
-                const cleanUser = username.toLowerCase();
-
-                if (cleanUser === 'admin' && password === 'qiraati2026') {
-                    const defaultUser = { username: 'admin', nama: 'Pengurus Cabang Surabaya', kecamatan: 'Semua', role: 'Admin' };
-                    sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(defaultUser));
-                    uInput.value = '';
-                    pInput.value = '';
-                    checkAuthSession();
-                } else if (mockLembagas[cleanUser] && password === 'qiraati123') {
-                    const lembagaUser = {
-                        username: cleanUser,
-                        nama: mockLembagas[cleanUser].nama,
-                        kecamatan: mockLembagas[cleanUser].kecamatan,
-                        role: 'Lembaga'
-                    };
-                    sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(lembagaUser));
-                    uInput.value = '';
-                    pInput.value = '';
-                    checkAuthSession();
-                } else {
-                    if (errAlert && errMsg) {
-                        errMsg.innerText = "Username atau Password salah.";
-                        errAlert.classList.remove('hidden');
-                    }
+                localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(lembagaUser));
+                uInput.value = '';
+                pInput.value = '';
+                checkAuthSession();
+            } else {
+                if (errAlert && errMsg) {
+                    errMsg.innerText = "Username atau Password salah.";
+                    errAlert.classList.remove('hidden');
                 }
-            }, 600);
+            }
         }
 
         function handleLogout() {
+            localStorage.removeItem(AUTH_STORAGE_KEY);
             sessionStorage.removeItem(AUTH_STORAGE_KEY);
             const form = document.getElementById('formInputTpq');
             if (form) form.reset();
@@ -1282,7 +1322,7 @@
                 try {
                     const response = await fetch(GOOGLE_SCRIPT_WEB_APP_URL + '?action=getData');
                     const json = await response.json();
-                    onDataLoaded(json.data || json, json.korcam, json.tpqByKecamatan);
+                    onDataLoaded(json.data || json, json.korcam, json.tpqByKecamatan, json.users);
                     return;
                 } catch(e) {
                     console.error("Gagal fetch dari Web App URL:", e);
@@ -1321,8 +1361,17 @@
             onDataLoaded(initialDemo);
         }
 
-        function onDataLoaded(data, korcamMap, tpqMap) {
+        function onDataLoaded(data, korcamMap, tpqMap, usersList) {
             globalData = data || [];
+            
+            // Simpan akun ke cache browser untuk Login Kilat (0.01 detik)
+            if (Array.isArray(usersList) && usersList.length > 0) {
+                cachedUsersList = usersList;
+                try {
+                    localStorage.setItem(AUTH_USERS_CACHE_KEY, JSON.stringify(usersList));
+                } catch(e) {}
+            }
+
             if (korcamMap && typeof korcamMap === 'object') {
                 Object.keys(korcamMap).forEach(k => {
                     if (!dataKorcamByKecamatan[k]) dataKorcamByKecamatan[k] = {};
