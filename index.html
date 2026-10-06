@@ -1202,13 +1202,13 @@
             }
 
             if (selectedKec && tpqSet.size === 0) {
-                tpqSelect.disabled = true;
-                tpqSelect.classList.add('bg-slate-100');
-                tpqSelect.classList.remove('bg-white');
+                tpqSelect.disabled = false;
+                tpqSelect.classList.remove('bg-slate-100');
+                tpqSelect.classList.add('bg-white');
                 const opt = document.createElement('option');
                 opt.value = "";
                 opt.selected = true;
-                opt.textContent = "Kosong. Hubungi admin";
+                opt.textContent = `-- Belum ada data di Kec. ${selectedKec} --`;
                 tpqSelect.appendChild(opt);
             } else {
                 tpqSelect.disabled = false;
@@ -1333,12 +1333,14 @@
             }
 
             // Sinkronkan daftar TPQ dari Google Sheet (tab Users)
+            const standardKecList = ["Pakal", "Jambangan", "Kenjeran", "Rungkut", "Gunung Anyar", "Karang Pilang", "Asemrowo", "Benowo"];
             if (tpqMap && typeof tpqMap === 'object') {
-                Object.keys(tpqMap).forEach(k => {
-                    if (!tpqListByKecamatan[k]) tpqListByKecamatan[k] = [];
-                    tpqMap[k].forEach(nama => {
-                        if (!tpqListByKecamatan[k].includes(nama)) {
-                            tpqListByKecamatan[k].push(nama);
+                Object.keys(tpqMap).forEach(rawK => {
+                    const matchedKec = standardKecList.find(sk => sk.toLowerCase() === rawK.toLowerCase()) || rawK;
+                    if (!tpqListByKecamatan[matchedKec]) tpqListByKecamatan[matchedKec] = [];
+                    (tpqMap[rawK] || []).forEach(nama => {
+                        if (!tpqListByKecamatan[matchedKec].includes(nama)) {
+                            tpqListByKecamatan[matchedKec].push(nama);
                         }
                     });
                 });
@@ -1348,9 +1350,10 @@
             if (Array.isArray(globalData)) {
                 globalData.forEach(d => {
                     if (d.kecamatan && d.namaTpq) {
-                        if (!tpqListByKecamatan[d.kecamatan]) tpqListByKecamatan[d.kecamatan] = [];
-                        if (!tpqListByKecamatan[d.kecamatan].includes(d.namaTpq)) {
-                            tpqListByKecamatan[d.kecamatan].push(d.namaTpq);
+                        const matchedKec = standardKecList.find(sk => sk.toLowerCase() === d.kecamatan.toLowerCase()) || d.kecamatan;
+                        if (!tpqListByKecamatan[matchedKec]) tpqListByKecamatan[matchedKec] = [];
+                        if (!tpqListByKecamatan[matchedKec].includes(d.namaTpq)) {
+                            tpqListByKecamatan[matchedKec].push(d.namaTpq);
                         }
                     }
                 });
