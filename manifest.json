@@ -1,0 +1,26 @@
+{
+  "name": "Data Santri Qiraati Surabaya",
+  "short_name": "Qiraati SBY",
+  "description": "Sistem pencatatan dan rekap data santri Qiraati Cabang Surabaya",
+  "start_url": "/datasantri/",
+  "scope": "/datasantri/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#d97706",
+  "orientation": "portrait-primary",
+  "lang": "id",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
